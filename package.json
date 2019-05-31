@@ -1,0 +1,59 @@
+{
+  "name": "flipbook-vue",
+  "version": "0.1.0",
+  "license": "MIT",
+  "main": "dist/flipbook.cjs.js",
+  "module": "dist/flipbook.es.js",
+  "unpkg": "dist/flipbook.min.js",
+  "browser": {
+    "./sfc": "src/Flipbook.vue"
+  },
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build --dest docs",
+    "clean": "rm -rf dist",
+    "dist": "npm run clean && npm run dist:cjs && npm run dist:es && npm run dist:unpkg",
+    "dist:cjs": "rollup --config rollup.config.js --external rematrix --format cjs src/Flipbook.vue --file dist/flipbook.cjs.js",
+    "dist:es": "rollup --config rollup.config.js --external rematrix --format es src/Flipbook.vue --file dist/flipbook.es.js",
+    "dist:unpkg": "rollup --config rollup.config.js --format iife src/wrapper.coffee --file dist/flipbook.js && terser -m --comments -o dist/flipbook.min.js < dist/flipbook.js"
+  },
+  "dependencies": {
+    "rematrix": "^0.3.0",
+    "vue": "^2.6.10"
+  },
+  "devDependencies": {
+    "@vue/cli-plugin-babel": "^3.7.0",
+    "@vue/cli-service": "^3.7.0",
+    "coffee-loader": "^0.9.0",
+    "coffeescript": "^2.4.1",
+    "core-js": "^2.6.5",
+    "rollup": "^1.12.5",
+    "rollup-plugin-buble": "^0.19.6",
+    "rollup-plugin-coffee-script": "^2.0.0",
+    "rollup-plugin-commonjs": "^10.0.0",
+    "rollup-plugin-node-resolve": "^5.0.0",
+    "rollup-plugin-vue": "^5.0.0",
+    "vue-cli-plugin-coffeescript": "^0.0.3",
+    "vue-material-design-icons": "^3.2.0",
+    "vue-ribbon": "^1.0.1",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 0.25%",
+    "not dead"
+  ],
+  "files": [
+    "dist",
+    "src/Flipbook.vue",
+    "src/matrix.coffee"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ts1/flipbook-vue.git"
+  }
+}
