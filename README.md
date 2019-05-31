@@ -1,6 +1,6 @@
 # flipbook-vue
 
-`flipbook-vue` is a Vue component that displays images in 3D page-flipping effect.
+`flipbook-vue` is a Vue component that displays images in 3D page flip effect.
 
 Demo page is [here](https://ts1.github.io/flipbook-vue/).
 
@@ -21,7 +21,7 @@ yarn add flipbook-vue
 Or include from html.
 
 ```
-<script src="https://unpkg.com/flipbook-vue/dist/flipbook.min.js"></script>
+<script src="https://unpkg.com/flipbook-vue"></script>
 ```
 
 ## Usage
@@ -46,7 +46,7 @@ export default {
 Array of image URLs. Required.
 All images should have the same aspect ratio.
 
-If the first element is `null`, the next element is displayed as cover page.
+If the first element is `null`, the next element is displayed as the cover page.
 
 All other props are optional.
 
@@ -84,7 +84,7 @@ Defaults to 0.6.
 
 ## Slot props
 
-This component exposes some property and methods as slot properties.
+This component exposes some properties and methods as slot properties.
 Example usage:
 
 ```
@@ -94,7 +94,7 @@ Example usage:
 </flipbook>
 ```
 
-For more practical usage, refer to `src/App.vue` (the demo page implementation).
+For more practical usage, refer to `src/App.vue` (the demo page source).
 
 ### `canFlipLeft`
 
@@ -130,10 +130,10 @@ Method to zoom out.
 
 ## CSS API
 
-You have to specify size of view port in your style sheet, directly to
+You have to specify the size of view port in your style sheet, directly to
 `<flipbook>` element.
 
-If the size is horizontally long, it displays two pages spread, suitable for desktop browser.
+If the size is horizontally long, it displays two pages spread, suitable for desktop browsers.
 If it's vertically long, it displays single pages, suitable for smartphones.
 
 There are some internal classes.
@@ -141,7 +141,11 @@ There are some internal classes.
 ### `.bounding-box`
 
 Approximate bounding box of the displayed images.
-Suitable for give `box-shadow`.
+Suitable to give `box-shadow`.
+
+## Browser support
+
+Supports modern browsers and IE 11.
 
 ## License
 

@@ -1,7 +1,10 @@
 {
   "name": "flipbook-vue",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "license": "MIT",
+  "description": "3D page flip effect for Vue.js",
+  "homepage": "https://ts1.github.component io/flipbook-vue/",
+  "author": "Takeshi Sone <takeshi.sone@gmail.com> (https://github.com/ts1)",
   "main": "dist/flipbook.cjs.js",
   "module": "dist/flipbook.es.js",
   "unpkg": "dist/flipbook.min.js",
@@ -15,7 +18,7 @@
     "dist": "npm run clean && npm run dist:cjs && npm run dist:es && npm run dist:unpkg",
     "dist:cjs": "rollup --config rollup.config.js --external rematrix --format cjs src/Flipbook.vue --file dist/flipbook.cjs.js",
     "dist:es": "rollup --config rollup.config.js --external rematrix --format es src/Flipbook.vue --file dist/flipbook.es.js",
-    "dist:unpkg": "rollup --config rollup.config.js --format iife src/wrapper.coffee --file dist/flipbook.js && terser -m --comments -o dist/flipbook.min.js < dist/flipbook.js"
+    "dist:unpkg": "rollup --config rollup.config.js --format iife src/wrapper.coffee --file dist/flipbook.js && terser -m --comments -o dist/flipbook.min.js dist/flipbook.js"
   },
   "dependencies": {
     "rematrix": "^0.3.0",
