@@ -136,19 +136,19 @@ True if it can zoom in.
 
 True if it can zoom out.
 
-### `flipLeft`
+### `flipLeft()`
 
 Method to flip to previous page.
 
-### `flipRight`
+### `flipRight()`
 
 Method to flip to next page.
 
-### `zoomIn`
+### `zoomIn()`
 
 Method to zoom in.
 
-### `zoomOut`
+### `zoomOut()`
 
 Method to zoom out.
 

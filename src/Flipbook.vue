@@ -1,17 +1,5 @@
 <template>
-  <div
-    @touchstart="onTouchStart"
-    @touchmove="onTouchMove"
-    @touchend="onTouchEnd"
-    @touchcancel="onTouchEnd"
-    @mousedown="onMouseDown"
-    @mousemove="onMouseMove"
-    @mouseup="onMouseUp"
-    @pointerdown="onPointerDown"
-    @pointermove="onPointerMove"
-    @pointerup="onPointerUp"
-    @pointercancel="onPointerUp"
-  >
+  <div>
     <slot v-bind="{
       canFlipLeft,
       canFlipRight,
@@ -22,7 +10,22 @@
       zoomIn,
       zoomOut
     }" />
-    <div class="viewport" ref="viewport" :class="{ zoom: zooming || zoom > 1 }">
+    <div
+      class="viewport"
+      ref="viewport"
+      :class="{ zoom: zooming || zoom > 1 }"
+      @touchstart="onTouchStart"
+      @touchmove="onTouchMove"
+      @touchend="onTouchEnd"
+      @touchcancel="onTouchEnd"
+      @mousedown="onMouseDown"
+      @mousemove="onMouseMove"
+      @mouseup="onMouseUp"
+      @pointerdown="onPointerDown"
+      @pointermove="onPointerMove"
+      @pointerup="onPointerUp"
+      @pointercancel="onPointerUp"
+    >
       <div
         class="container"
         :style="{
