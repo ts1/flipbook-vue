@@ -13,6 +13,7 @@
       :pages="pages"
       :pagesHiRes="pagesHiRes"
       v-slot="flipbook"
+      ref="flipbook"
     >
       <div class="action-bar">
         <left-icon
@@ -76,6 +77,13 @@ export default
       'images-large/6.jpg'
     ],
     hasMouse: true
+  mounted: ->
+    window.addEventListener 'keydown', (ev) =>
+      flipbook = @$refs.flipbook
+      return unless flipbook
+      flipbook.flipLeft() if ev.keyCode == 37 and flipbook.canFlipLeft
+      flipbook.flipRight() if ev.keyCode == 39 and flipbook.canFlipRight
+
 </script>
 
 <style>
