@@ -10,6 +10,15 @@ export default class Matrix
     else
       @m = identity()
 
+  @perspective: (d) -> new Matrix [
+      1, 0, 0, 0,
+      0, 1, 0, 0,
+      0, 0, 1, -1/d,
+      0, 0, 0, 1
+    ]
+
+  clone: -> new Matrix @
+
   multiply: (m) ->
     m = m.m  unless Array.isArray m
     @m = multiply @m, m

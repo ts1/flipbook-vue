@@ -130,8 +130,8 @@ export default
       type: Array
       default: -> [1, 2, 4]
     perspective:
-      type: String
-      default: '2400px'
+      type: Number
+      default: 2400
     nPolygons:
       type: Number
       default: 10
@@ -308,7 +308,7 @@ export default
           else
             originRight = true
 
-      pageTransform = new Matrix
+      pageTransform = Matrix.perspective @perspective
       pageTransform.translate gx, @yMargin
 
       pageRotation = 0
@@ -348,7 +348,7 @@ export default
       for i in [0...@nPolygons]
         bgPos = "#{i / (@nPolygons - 1) * 100}% 0px"
 
-        transform = new Matrix pageTransform
+        transform = pageTransform.clone()
         rad = if originRight then theta - radian else radian
         x = Math.sin(rad) * radius
         x = @pageWidth - x if originRight
@@ -368,7 +368,7 @@ export default
 
         lighting = @computeLighting(pageRotation - rotate, dRotate)
 
-        tfString = "perspective(#{@perspective}) #{transform.toString()}"
+        tfString = "#{transform.toString()}"
         radian += dRadian
         rotate += dRotate
         [face+i, bgImg, lighting, bgPos, tfString, Math.abs(Math.round(z))]
