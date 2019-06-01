@@ -308,8 +308,8 @@ export default
           else
             originRight = true
 
-      pageTransform = Matrix.perspective @perspective
-      pageTransform.translate gx, @yMargin
+      pageMatrix = Matrix.perspective @perspective
+      pageMatrix.translate gx, @yMargin
 
       pageRotation = 0
       if progress > 0.5
@@ -319,9 +319,9 @@ export default
       pageRotation += 180 if face == 'back'
 
       if pageRotation
-        pageTransform.translate @pageWidth if originRight
-        pageTransform.rotateY pageRotation
-        pageTransform.translate -@pageWidth if originRight
+        pageMatrix.translate @pageWidth if originRight
+        pageMatrix.rotateY pageRotation
+        pageMatrix.translate -@pageWidth if originRight
 
       if progress < 0.5
         theta = progress * 2 * Math.PI
@@ -348,30 +348,27 @@ export default
       for i in [0...@nPolygons]
         bgPos = "#{i / (@nPolygons - 1) * 100}% 0px"
 
-        transform = pageTransform.clone()
+        m = pageMatrix.clone()
         rad = if originRight then theta - radian else radian
         x = Math.sin(rad) * radius
         x = @pageWidth - x if originRight
         z = (1 - Math.cos(rad)) * radius
         z = -z if face == 'back'
 
-        transform.translate x
-        transform.translateZ z
-        transform.rotateY -rotate
+        m.translate x
+        m.translateZ z
+        m.rotateY -rotate
 
-        # This approximates X without computing perspective.
-        # So use conservative value.
-        ax = transform.computeX()
-        @maxX = ax if ax > @maxX
-        ax += 2 * polygonWidth
-        @minX = ax if ax < @minX
+        x0 = m.computeX 0
+        x1 = m.computeX polygonWidth
+        @maxX = Math.max Math.max(x0, x1), @maxX
+        @minX = Math.min Math.min(x0, x1), @minX
 
         lighting = @computeLighting(pageRotation - rotate, dRotate)
 
-        tfString = "#{transform.toString()}"
         radian += dRadian
         rotate += dRotate
-        [face+i, bgImg, lighting, bgPos, tfString, Math.abs(Math.round(z))]
+        [face+i, bgImg, lighting, bgPos, m.toString(), Math.abs(Math.round(z))]
 
     computeLighting: (rot, dRotate) ->
       gradients = []

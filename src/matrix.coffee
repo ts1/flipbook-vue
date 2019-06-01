@@ -23,7 +23,7 @@ export default class Matrix
     m = m.m  unless Array.isArray m
     @m = multiply @m, m
 
-  computeX: -> @m[12]
+  computeX: (x) -> @m[12] / (x * @m[3] + @m[15])
 
   translate: (x, y) -> @multiply translate x, y
   translateZ: (z) -> @multiply translateZ z
