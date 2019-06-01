@@ -660,7 +660,7 @@ export default
 }
 
 .polygon.blank {
-  background-color: #fff;
+  background-color: #ddd;
 }
 
 .polygon .lighting {
