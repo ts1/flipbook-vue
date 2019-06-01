@@ -14,6 +14,7 @@
       class="viewport"
       ref="viewport"
       :class="{ zoom: zooming || zoom > 1 }"
+      :style="{ cursor: cursor }"
       @touchstart="onTouchStart"
       @touchmove="onTouchMove"
       @touchend="onTouchEnd"
@@ -33,10 +34,7 @@
           width: containerWidth
         }"
       >
-        <div
-          class="centering-box"
-          :style="{ transform: `translateX(${centerOffsetSmoothed}px)` }"
-        >
+        <div :style="{ transform: `translateX(${centerOffsetSmoothed}px)` }">
           <div
             class="bounding-box"
             :style="{
@@ -143,6 +141,9 @@ export default
     gloss:
       type: Number
       default: 0.6
+    swipeMin:
+      type: Number
+      default: 3
 
   data: ->
     viewWidth: 0
@@ -163,6 +164,9 @@ export default
     zooming: false
     touchStartX: null
     touchStartY: null
+    maxMove: 0
+    canGrab: false
+    grabbing: false
     hasTouchEvents: false
     hasPointerEvents: false
     containerWidth: '100%'
@@ -186,6 +190,16 @@ export default
       not @flip.direction and @currentPage < @nPages - @displayedPages
     canZoomIn: -> not @zooming and @zoomIndex < @nZooms - 1
     canZoomOut: -> not @zooming and @zoomIndex > 0
+    cursor: ->
+      if @grabbing
+        'grabbing'
+      else if @canGrab
+        'grab'
+      else if @zoomIndex < @zooms.length - 1
+        'zoom-in'
+      else
+        'zoom-out'
+
     pageScale: ->
       vw = @viewWidth / @displayedPages
       xScale = vw / @imageWidth
@@ -492,14 +506,15 @@ export default
       @zoomIndex -= 1
       @zoomTo @zooms[@zoomIndex]
 
-    zoomTo: (target) ->
+    zoomTo: (zoom, fixedX, fixedY) ->
       start = @zoom
-      end = target
+      end = zoom
 
-      startX = @$refs.viewport.scrollLeft
-      startY = @$refs.viewport.scrollTop
-      fixedX = @$refs.viewport.clientWidth / 2
-      fixedY = @$refs.viewport.clientHeight / 2
+      viewport = @$refs.viewport
+      startX = viewport.scrollLeft
+      startY = viewport.scrollTop
+      fixedX or= viewport.clientWidth / 2
+      fixedY or= viewport.clientHeight / 2
       containerFixedX = fixedX + startX
       containerFixedY = fixedY + startY
       endX = containerFixedX / start * end - fixedX
@@ -519,7 +534,7 @@ export default
           doZoom()
         else
           @zooming = false
-          @zoom = target
+          @zoom = zoom
 
           # XXX Hack to get Chrome scroll
           if @containerWidth == '100%'
@@ -528,24 +543,37 @@ export default
             @containerWidth = '100%'
       doZoom()
 
+    zoomAt: (touch) ->
+      rect = @$refs.viewport.getBoundingClientRect()
+      x = touch.pageX - rect.left
+      y = touch.pageY - rect.top
+      @zoomIndex = (@zoomIndex + 1) % @zooms.length
+      @zoomTo @zooms[@zoomIndex], x, y
+
     swipeStart: (touch) ->
       @touchStartX = touch.pageX
       @touchStartY = touch.pageY
+      @canGrab = true if @zoom == 1
+      @maxMove = 0
 
     swipeMove: (touch) ->
-      return if @zoom > 1
       return unless @touchStartX?
       x = touch.pageX - @touchStartX
       y = touch.pageY - @touchStartY
+      @maxMove = Math.max(@maxMove, Math.abs(x))
+      @maxMove = Math.max(@maxMove, Math.abs(y))
+      return if @zoom > 1
       return if Math.abs(y) > Math.abs(x)
+      @grabbing = true
+      @canGrab = false
       if x > 0
-        if @flip.direction == null and @canFlipLeft and x >= 5
+        if @flip.direction == null and @canFlipLeft and x >= @swipeMin
           @flipStart 'left', false
         if @flip.direction == 'left'
           @flip.progress = x / @pageWidth
           @flip.progress = 1 if @flip.progress > 1
       else
-        if @flip.direction == null && @canFlipRight and x <= -5
+        if @flip.direction == null && @canFlipRight and x <= -@swipeMin
           @flipStart 'right', false
         if @flip.direction == 'right'
           @flip.progress = -x / @pageWidth
@@ -553,12 +581,15 @@ export default
       true
 
     swipeEnd: (touch) ->
-      if @flip.direction != null && !@flip.auto
+      @zoomAt touch if @maxMove < @swipeMin
+      if @flip.direction != null and not @flip.auto
         if @flip.progress > 1/4
           @flipAuto(false)
         else
           @flipRevert()
       @touchStartX = null
+      @grabbing = false
+      @canGrab = false
 
     onTouchStart: (ev) ->
       @hasTouchEvents = true
@@ -570,20 +601,20 @@ export default
 
     onPointerDown: (ev) ->
       @hasPointerEvents = true
-      unless @hasTouchEvents
-        @swipeStart ev
-        try
-          ev.target.setPointerCapture ev.pointerId
-        catch
+      return if @hasTouchEvents
+      @swipeStart ev
+      try
+        ev.target.setPointerCapture ev.pointerId
+      catch
 
     onPointerMove: (ev) -> @swipeMove ev unless @hasTouchEvents
 
     onPointerUp: (ev) ->
-      unless @hasTouchEvents
-        @swipeEnd ev
-        try
-          ev.target.releasePointerCapture ev.pointerId
-        catch
+      return if @hasTouchEvents
+      @swipeEnd ev
+      try
+        ev.target.releasePointerCapture ev.pointerId
+      catch
 
     onMouseDown: (ev) ->
       @swipeStart ev unless @hasTouchEvents or @hasPointerEvents
