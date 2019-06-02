@@ -13,7 +13,10 @@
     <div
       class="viewport"
       ref="viewport"
-      :class="{ zoom: zooming || zoom > 1 }"
+      :class="{
+        zoom: zooming || zoom > 1,
+        'drag-to-scroll': dragToScroll
+      }"
       :style="{ cursor: cursor }"
       @touchstart="onTouchStart"
       @touchmove="onTouchMove"
@@ -27,13 +30,7 @@
       @pointerup="onPointerUp"
       @pointercancel="onPointerUp"
     >
-      <div
-        class="container"
-        :style="{
-          transform: `scale(${zoom})`,
-          width: containerWidth
-        }"
-      >
+      <div class="container" :style="{ transform: `scale(${zoom})`, }">
         <div :style="{ transform: `translateX(${centerOffsetSmoothed}px)` }">
           <div
             class="bounding-box"
@@ -164,7 +161,6 @@ export default
     grabbing: false
     hasTouchEvents: false
     hasPointerEvents: false
-    containerWidth: '100%'
     minX: Infinity
     maxX: -Infinity
     preloadedImages: {}
@@ -176,6 +172,8 @@ export default
       auto: false
     currentCenterOffset: null
     animatingCenter: false
+    startScrollLeft: 0
+    startScrollTop: 0
 
   computed:
     canFlipLeft: ->
@@ -239,6 +237,8 @@ export default
         @currentCenterOffset = retval
       retval
     centerOffsetSmoothed: -> Math.round(@currentCenterOffset)
+
+    dragToScroll: -> not @hasTouchEvents
 
   mounted: ->
     window.addEventListener 'resize', (=> @onResize()), passive: true
@@ -500,7 +500,6 @@ export default
     zoomTo: (zoom, fixedX, fixedY) ->
       start = @zoom
       end = zoom
-
       viewport = @$refs.viewport
       startX = viewport.scrollLeft
       startY = viewport.scrollTop
@@ -513,26 +512,24 @@ export default
 
       t0 = Date.now()
       @zooming = true
-      doZoom = => requestAnimationFrame =>
+      animate = => requestAnimationFrame =>
         t = Date.now() - t0
         ratio = t / @zoomDuration
-        ratio = 1 if ratio > 1
+        ratio = 1 if ratio > 1 or IE
         ratio = easeInOut(ratio)
         @zoom = start + (end - start) * ratio
-        @$refs.viewport.scrollLeft = startX + (endX - startX) * ratio
-        @$refs.viewport.scrollTop = startY + (endY - startY) * ratio
+        viewport.scrollLeft = startX + (endX - startX) * ratio
+        viewport.scrollTop = startY + (endY - startY) * ratio
         if t < @zoomDuration
-          doZoom()
+          animate()
         else
           @zooming = false
           @zoom = zoom
-
-          # XXX Hack to get Chrome scroll
-          if @containerWidth == '100%'
-            @containerWidth = '99.999%'
-          else
-            @containerWidth = '100%'
-      doZoom()
+          viewport.scrollLeft = endX
+          viewport.scrollTop = endY
+      animate()
+      if end > 1
+        @preloadImages true
 
     zoomAt: (touch) ->
       rect = @$refs.viewport.getBoundingClientRect()
@@ -544,8 +541,10 @@ export default
     swipeStart: (touch) ->
       @touchStartX = touch.pageX
       @touchStartY = touch.pageY
-      @canGrab = true if @zoom == 1
+      @canGrab = true
       @maxMove = 0
+      @startScrollLeft = @$refs.viewport.scrollLeft
+      @startScrollTop = @$refs.viewport.scrollTop
 
     swipeMove: (touch) ->
       return unless @touchStartX?
@@ -553,7 +552,9 @@ export default
       y = touch.pageY - @touchStartY
       @maxMove = Math.max(@maxMove, Math.abs(x))
       @maxMove = Math.max(@maxMove, Math.abs(y))
-      return if @zoom > 1
+      if @zoom > 1
+        @dragScroll x, y if @dragToScroll
+        return
       return if Math.abs(y) > Math.abs(x)
       @grabbing = true
       @canGrab = false
@@ -614,7 +615,13 @@ export default
     onMouseUp: (ev) ->
       @swipeEnd ev unless @hasTouchEvents or @hasPointerEvents
 
-    preloadImages: ->
+    dragScroll: (x, y) ->
+      @grabbing = true
+      @canGrab = false
+      @$refs.viewport.scrollLeft = @startScrollLeft - x
+      @$refs.viewport.scrollTop = @startScrollTop - y
+
+    preloadImages: (hiRes = false) ->
       if Object.keys(@preloadedImages).length >= 10
         @preloadedImages = {}
       for i in [@currentPage - 3 .. @currentPage + 3]
@@ -624,6 +631,14 @@ export default
             img = new Image()
             img.src = url
             @preloadedImages[url] = img
+      if hiRes
+        for i in [@currentPage ... @currentPage + @displayedPages]
+          url = @pagesHiRes[i]
+          if url
+            unless @preloadedImages[url]
+              img = new Image()
+              img.src = url
+              @preloadedImages[url] = img
 
   watch:
     currentPage: ->
@@ -656,6 +671,10 @@ export default
 
 .viewport.zoom {
   overflow: scroll;
+}
+
+.viewport.zoom.drag-to-scroll {
+  overflow: hidden;
 }
 
 .container {
