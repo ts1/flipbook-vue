@@ -1,4 +1,4 @@
-import { identity, multiply, translate, rotateY } from 'rematrix'
+import { identity, multiply, translate, rotateY, toString } from 'rematrix'
 
 export default class Matrix
   constructor: (arg) ->
@@ -32,4 +32,4 @@ export default class Matrix
 
   rotateY: (deg) -> @multiply rotateY deg
 
-  toString: -> "matrix3d(#{@m.toString()})"
+  toString: -> toString @m

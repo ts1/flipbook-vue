@@ -290,26 +290,26 @@ export default
 
       polygonWidth = @pageWidth / @nPolygons
 
-      gx = @xMargin
+      pageX = @xMargin
       originRight = false
       if @displayedPages == 1
         if face == 'back'
           originRight = true
-          gx = @xMargin - @pageWidth
+          pageX = @xMargin - @pageWidth
       else
         if direction == 'left'
           if face == 'back'
-            gx = @viewWidth / 2
+            pageX = @viewWidth / 2
           else
             originRight = true
         else
           if face == 'front'
-            gx = @viewWidth / 2
+            pageX = @viewWidth / 2
           else
             originRight = true
 
       pageMatrix = Matrix.perspective @perspective
-      pageMatrix.translate gx, @yMargin
+      pageMatrix.translate pageX, @yMargin
 
       pageRotation = 0
       if progress > 0.5
