@@ -33,8 +33,8 @@ Or include in html.
 
 <style>
 .flipbook {
-  width: 100%;
-  height: 100%;
+  width: 90vw;
+  height: 90vh;
 }
 </style>
 ```

@@ -588,7 +588,7 @@ export default
       @swipeStart ev.changedTouches[0]
     onTouchMove: (ev) ->
       if @swipeMove ev.changedTouches[0]
-        ev.preventDefault()
+        ev.preventDefault() if ev.cancelable
     onTouchEnd: (ev) -> @swipeEnd ev.changedTouches[0]
 
     onPointerDown: (ev) ->
