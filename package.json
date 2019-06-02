@@ -1,6 +1,6 @@
 {
   "name": "flipbook-vue",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "license": "MIT",
   "description": "3D page flip effect for Vue.js",
   "homepage": "https://ts1.github.io/flipbook-vue/",
@@ -38,6 +38,7 @@
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-service": "^3.7.0",
+    "autoprefixer": "^9.5.1",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.4.1",
     "core-js": "^2.6.5",
