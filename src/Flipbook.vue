@@ -355,12 +355,11 @@ export default
         z = (1 - Math.cos(rad)) * radius
         z = -z if face == 'back'
 
-        m.translate x
-        m.translateZ z
+        m.translate3d x, 0, z
         m.rotateY -rotate
 
-        x0 = m.computeX 0
-        x1 = m.computeX polygonWidth
+        x0 = m.transformX 0
+        x1 = m.transformX polygonWidth
         @maxX = Math.max Math.max(x0, x1), @maxX
         @minX = Math.min Math.min(x0, x1), @minX
 

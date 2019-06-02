@@ -1,12 +1,12 @@
-import { identity, multiply, translate, translateZ, rotateY } from 'rematrix'
+import { identity, multiply, translate, rotateY } from 'rematrix'
 
 export default class Matrix
   constructor: (arg) ->
     if arg
-      if Array.isArray(arg)
-        @m = arg
-      else
+      if arg.m
         @m = [arg.m...]
+      else
+        @m = [arg...]
     else
       @m = identity()
 
@@ -19,13 +19,17 @@ export default class Matrix
 
   clone: -> new Matrix @
 
-  multiply: (m) ->
-    m = m.m  unless Array.isArray m
-    @m = multiply @m, m
+  multiply: (m) -> @m = multiply @m, m
 
-  computeX: (x) -> @m[12] / (x * @m[3] + @m[15])
+  transformX: (x) -> (x * @m[0] + @m[12]) / (x * @m[3] + @m[15])
 
   translate: (x, y) -> @multiply translate x, y
-  translateZ: (z) -> @multiply translateZ z
+
+  translate3d: (x, y, z) ->
+    m = translate x, y
+    m[14] = z
+    @multiply m
+
   rotateY: (deg) -> @multiply rotateY deg
+
   toString: -> "matrix3d(#{@m.toString()})"
