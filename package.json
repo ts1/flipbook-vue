@@ -25,11 +25,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build --dest docs",
-    "clean": "rm -rf dist",
-    "dist": "npm run clean && npm run dist:cjs && npm run dist:es && npm run dist:unpkg",
-    "dist:cjs": "rollup --config rollup.config.js --external rematrix --format cjs src/Flipbook.vue --file dist/flipbook.cjs.js",
-    "dist:es": "rollup --config rollup.config.js --external rematrix --format es src/Flipbook.vue --file dist/flipbook.es.js",
-    "dist:unpkg": "rollup --config rollup.config.js --format iife src/wrapper.coffee --file dist/flipbook.js && terser -m --comments -o dist/flipbook.min.js dist/flipbook.js"
+    "dist": "rollup -c rollup.config.js"
   },
   "dependencies": {
     "rematrix": "^0.3.0",
@@ -47,6 +43,7 @@
     "rollup-plugin-coffee-script": "^2.0.0",
     "rollup-plugin-commonjs": "^10.0.0",
     "rollup-plugin-node-resolve": "^5.0.0",
+    "rollup-plugin-terser": "^5.0.0",
     "rollup-plugin-vue": "^5.0.0",
     "vue-cli-plugin-coffeescript": "^0.0.3",
     "vue-material-design-icons": "^3.2.0",

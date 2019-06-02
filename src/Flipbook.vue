@@ -98,11 +98,6 @@
 </template>
 
 <script lang="coffee">
-###! @license Flipbook.vue
-Copyright © 2019 Takeshi Sone.
-Released under the MIT License (https://opensource.org/licenses/MIT).
-###
-
 import Matrix from './matrix'
 
 easeIn = (x) -> Math.pow(x, 2)
