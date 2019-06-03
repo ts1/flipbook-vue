@@ -29,6 +29,7 @@
       @pointermove="onPointerMove"
       @pointerup="onPointerUp"
       @pointercancel="onPointerUp"
+      @wheel="onWheel"
     >
       <div class="container" :style="{ transform: `scale(${zoom})`, }">
         <div :style="{ transform: `translateX(${centerOffsetSmoothed}px)` }">
@@ -620,6 +621,12 @@ export default
       @canGrab = false
       @$refs.viewport.scrollLeft = @startScrollLeft - x
       @$refs.viewport.scrollTop = @startScrollTop - y
+
+    onWheel: (ev) ->
+      if @zoom > 1 and @dragToScroll
+        @$refs.viewport.scrollLeft += ev.deltaX
+        @$refs.viewport.scrollTop += ev.deltaY
+        ev.preventDefault() if ev.cancelable
 
     preloadImages: (hiRes = false) ->
       if Object.keys(@preloadedImages).length >= 10
