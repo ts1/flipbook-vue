@@ -10,16 +10,16 @@ export default class Matrix
     else
       @m = identity()
 
-  @perspective: (d) -> new Matrix [
-      1, 0, 0, 0,
-      0, 1, 0, 0,
-      0, 0, 1, -1/d,
-      0, 0, 0, 1
-    ]
-
   clone: -> new Matrix @
 
   multiply: (m) -> @m = multiply @m, m
+
+  perspective: (d) -> @multiply [
+    1, 0, 0, 0,
+    0, 1, 0, 0,
+    0, 0, 1, -1/d,
+    0, 0, 0, 1
+  ]
 
   transformX: (x) -> (x * @m[0] + @m[12]) / (x * @m[3] + @m[15])
 

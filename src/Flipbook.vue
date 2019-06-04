@@ -304,7 +304,10 @@ export default
           else
             originRight = true
 
-      pageMatrix = Matrix.perspective @perspective
+      pageMatrix = new Matrix
+      pageMatrix.translate @viewWidth / 2
+      pageMatrix.perspective @perspective
+      pageMatrix.translate -@viewWidth / 2
       pageMatrix.translate pageX, @yMargin
 
       pageRotation = 0
