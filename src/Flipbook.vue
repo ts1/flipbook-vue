@@ -158,8 +158,7 @@ export default
     touchStartX: null
     touchStartY: null
     maxMove: 0
-    canGrab: false
-    grabbing: false
+    activeCursor: null
     hasTouchEvents: false
     hasPointerEvents: false
     minX: Infinity
@@ -187,10 +186,10 @@ export default
     canZoomIn: -> not @zooming and @zoomIndex < @nZooms - 1
     canZoomOut: -> not @zooming and @zoomIndex > 0
     cursor: ->
-      if @grabbing
-        'grabbing'
-      else if @canGrab
-        'grab'
+      if @activeCursor
+        @activeCursor
+      else if IE
+        'auto'
       else if @zoomIndex < @zooms.length - 1
         'zoom-in'
       else
@@ -582,10 +581,13 @@ export default
     swipeStart: (touch) ->
       @touchStartX = touch.pageX
       @touchStartY = touch.pageY
-      @canGrab = true
       @maxMove = 0
-      @startScrollLeft = @$refs.viewport.scrollLeft
-      @startScrollTop = @$refs.viewport.scrollTop
+      if @zoom <= 1
+        @activeCursor = 'grab'
+      else
+        @startScrollLeft = @$refs.viewport.scrollLeft
+        @startScrollTop = @$refs.viewport.scrollTop
+        @activeCursor = 'all-scroll'
 
     swipeMove: (touch) ->
       return unless @touchStartX?
@@ -597,8 +599,7 @@ export default
         @dragScroll x, y if @dragToScroll
         return
       return if Math.abs(y) > Math.abs(x)
-      @grabbing = true
-      @canGrab = false
+      @activeCursor = 'grabbing'
       if x > 0
         if @flip.direction == null and @canFlipLeft and x >= @swipeMin
           @flipStart 'left', false
@@ -621,8 +622,7 @@ export default
         else
           @flipRevert()
       @touchStartX = null
-      @grabbing = false
-      @canGrab = false
+      @activeCursor = null
 
     onTouchStart: (ev) ->
       @hasTouchEvents = true
@@ -657,8 +657,6 @@ export default
       @swipeEnd ev unless @hasTouchEvents or @hasPointerEvents
 
     dragScroll: (x, y) ->
-      @grabbing = true
-      @canGrab = false
       @scrollLeft = @startScrollLeft - x
       @scrollTop = @startScrollTop - y
 
