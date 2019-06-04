@@ -175,6 +175,8 @@ export default
     animatingCenter: false
     startScrollLeft: 0
     startScrollTop: 0
+    scrollLeft: 0
+    scrollTop: 0
 
   computed:
     canFlipLeft: ->
@@ -241,6 +243,40 @@ export default
 
     dragToScroll: -> not @hasTouchEvents
 
+    scrollLeftMin: ->
+      w = (@boundingRight - @boundingLeft) * @zoom
+      if w < @viewWidth
+        (@boundingLeft + @centerOffsetSmoothed) * @zoom - (@viewWidth - w) / 2
+      else
+        (@boundingLeft + @centerOffsetSmoothed) * @zoom
+
+    scrollLeftMax: ->
+      w = (@boundingRight - @boundingLeft) * @zoom
+      if w < @viewWidth
+        (@boundingLeft + @centerOffsetSmoothed) * @zoom - (@viewWidth - w) / 2
+      else
+        (@boundingRight + @centerOffsetSmoothed)* @zoom - @viewWidth
+
+    scrollTopMin: ->
+      h = @pageHeight * @zoom
+      if h < @viewHeight
+        @yMargin * @zoom - (@viewHeight - h) / 2
+      else
+        @yMargin * @zoom
+
+    scrollTopMax: ->
+      h = @pageHeight * @zoom
+      if h < @viewHeight
+        @yMargin * @zoom - (@viewHeight - h) / 2
+      else
+        (@yMargin + @pageHeight) * @zoom - @viewHeight
+
+    scrollLeftLimited: ->
+      Math.min(@scrollLeftMax, Math.max(@scrollLeftMin, @scrollLeft))
+
+    scrollTopLimited: ->
+      Math.min(@scrollTopMax, Math.max(@scrollTopMin, @scrollTop))
+
   mounted: ->
     window.addEventListener 'resize', (=> @onResize()), passive: true
     @onResize()
@@ -248,9 +284,10 @@ export default
 
   methods:
     onResize: ->
-      return unless @$refs.viewport
-      @viewWidth = @$refs.viewport.clientWidth
-      @viewHeight = @$refs.viewport.clientHeight
+      viewport = @$refs.viewport
+      return unless viewport
+      @viewWidth = viewport.clientWidth
+      @viewHeight = viewport.clientHeight
       @displayedPages = if @viewWidth > @viewHeight then 2 else 1
       @currentPage &= ~1 if @displayedPages == 2
       @currentPage++ if @displayedPages == 1 and not @pageUrl(@leftPage)
@@ -522,15 +559,15 @@ export default
         ratio = 1 if ratio > 1 or IE
         ratio = easeInOut(ratio)
         @zoom = start + (end - start) * ratio
-        viewport.scrollLeft = startX + (endX - startX) * ratio
-        viewport.scrollTop = startY + (endY - startY) * ratio
+        @scrollLeft = startX + (endX - startX) * ratio
+        @scrollTop = startY + (endY - startY) * ratio
         if t < @zoomDuration
           animate()
         else
           @zooming = false
           @zoom = zoom
-          viewport.scrollLeft = endX
-          viewport.scrollTop = endY
+          @scrollLeft = endX
+          @scrollTop = endY
       animate()
       if end > 1
         @preloadImages true
@@ -622,13 +659,13 @@ export default
     dragScroll: (x, y) ->
       @grabbing = true
       @canGrab = false
-      @$refs.viewport.scrollLeft = @startScrollLeft - x
-      @$refs.viewport.scrollTop = @startScrollTop - y
+      @scrollLeft = @startScrollLeft - x
+      @scrollTop = @startScrollTop - y
 
     onWheel: (ev) ->
       if @zoom > 1 and @dragToScroll
-        @$refs.viewport.scrollLeft += ev.deltaX
-        @$refs.viewport.scrollTop += ev.deltaY
+        @scrollLeft = @$refs.viewport.scrollLeft + ev.deltaX
+        @scrollTop = @$refs.viewport.scrollTop + ev.deltaY
         ev.preventDefault() if ev.cancelable
 
     preloadImages: (hiRes = false) ->
@@ -669,6 +706,18 @@ export default
           animate()
       @animatingCenter = true
       animate()
+
+    scrollLeftLimited: (val) ->
+      if IE
+        requestAnimationFrame => @$refs.viewport.scrollLeft = val
+      else
+        @$refs.viewport.scrollLeft = val
+
+    scrollTop: (val) ->
+      if IE
+        requestAnimationFrame => @$refs.viewport.scrollTop = val
+      else
+        @$refs.viewport.scrollTop = val
 
 </script>
 
