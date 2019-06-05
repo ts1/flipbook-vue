@@ -5,13 +5,15 @@
   "description": "3D page flip effect for Vue.js",
   "homepage": "https://ts1.github.io/flipbook-vue/",
   "author": "Takeshi Sone <takeshi.sone@gmail.com> (https://github.com/ts1)",
+  "repository": "github:ts1/flipbook-vue",
   "keywords": [
     "vue",
     "flipbook",
     "component",
+    "book",
+    "page",
     "flip",
     "turn",
-    "page",
     "3d",
     "coffeescript",
     "coffeescript2"
@@ -28,8 +30,7 @@
     "dist": "rollup -c rollup.config.js"
   },
   "dependencies": {
-    "rematrix": "^0.3.0",
-    "vue": "^2.6.10"
+    "rematrix": "^0.3.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
@@ -45,10 +46,14 @@
     "rollup-plugin-node-resolve": "^5.0.0",
     "rollup-plugin-terser": "^5.0.0",
     "rollup-plugin-vue": "^5.0.0",
+    "vue": "^2.6.10",
     "vue-cli-plugin-coffeescript": "^0.0.3",
     "vue-material-design-icons": "^3.2.0",
     "vue-ribbon": "^1.0.1",
     "vue-template-compiler": "^2.5.21"
+  },
+  "peerDependencies": {
+    "vue": "^2.6.10"
   },
   "postcss": {
     "plugins": {
@@ -63,6 +68,5 @@
     "dist",
     "src/Flipbook.vue",
     "src/matrix.coffee"
-  ],
-  "repository": "github:ts1/flipbook-vue.git"
+  ]
 }
