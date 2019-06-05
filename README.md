@@ -6,7 +6,7 @@ Demo page is [here](https://ts1.github.io/flipbook-vue/).
 
 ## Installation
 
-Install as a package.
+Install as a module.
 
 ```
 npm i -S flipbook-vue
@@ -40,7 +40,7 @@ Or include in html.
 ```
 
 
-If installed as package,
+If installed as a module,
 
 ```html
 <script>
@@ -70,7 +70,7 @@ import Flipbook from 'flipbook-vue/src/Flipbook.vue'
 Array of image URLs. Required.
 All images should have the same aspect ratio.
 
-If the first element is `null`, the next element is displayed as the cover page.
+If the first element is `null`, the next element is displayed alone (as the cover page).
 
 All other props are optional.
 
@@ -105,6 +105,18 @@ Defaults to 0.4.
 Intensity of specular light in 0 to 1.
 Higher value gives more gloss.
 Defaults to 0.6.
+
+### `perspective`
+
+Z-axis distance in pixel between the screen and the viewer.
+Higher value gives less effect.
+Defaults to 2400.
+
+### `nPolygons`
+
+How many rectangles a single page is horizontally splitted into.
+Higher value gives higher quality rendering in exchange for performance.
+Defaults to 10.
 
 ## Slot props
 
