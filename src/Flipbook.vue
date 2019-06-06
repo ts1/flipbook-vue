@@ -711,7 +711,7 @@ export default
       else
         @$refs.viewport.scrollLeft = val
 
-    scrollTop: (val) ->
+    scrollTopLimited: (val) ->
       if IE
         requestAnimationFrame => @$refs.viewport.scrollTop = val
       else
