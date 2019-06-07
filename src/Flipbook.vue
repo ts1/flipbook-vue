@@ -684,6 +684,7 @@ export default
               img = new Image()
               img.src = url
               @preloadedImages[url] = img
+      return
 
   watch:
     currentPage: ->
