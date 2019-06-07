@@ -106,24 +106,13 @@ html, body {
 }
 
 a {
-  color: #ccc;
-}
-
-.flipbook {
-  position: relative;
-  width: 90vw;
-  height: calc(100vh - 50px - 40px); 
-  margin-top: 50px;
-}
-
-.flipbook .bounding-box {
-  box-shadow: 0 0 20px #000;
+  color: inherit;
 }
 
 .action-bar {
-  position: absolute;
-  top: -40px;
   width: 100%;
+  height: 30px;
+  padding: 10px 0;
   display: flex;
   justify-content: center;
 }
@@ -150,6 +139,15 @@ a {
 .action-bar .btn.disabled {
   color: #666;
   pointer-events: none;
+}
+
+.flipbook .viewport {
+  width: 90vw;
+  height: calc(100vh - 50px - 40px);
+}
+
+.flipbook .bounding-box {
+  box-shadow: 0 0 20px #000;
 }
 
 .credit {
