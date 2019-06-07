@@ -32,7 +32,7 @@ Or include in html.
 </template>
 
 <style>
-.flipbook {
+.flipbook .viewport {
   width: 90vw;
   height: 90vh;
 }
@@ -166,13 +166,18 @@ Method to zoom out.
 
 ## CSS API
 
-You have to specify the size of view port in your style sheet, directly to
-`<flipbook>` element.
+You may need to specify the size of view port in your style sheet, directly to
+`<flipbook>` element, or to `.viewport` sub-element of flipbook.
 
 If the size is horizontally long, it displays two pages spread, suitable for desktop browsers.
 If it's vertically long, it displays single pages, suitable for smartphones.
 
 There are some internal classes.
+
+### `.viewport`
+
+An `<div>` element that contains everything but `<slot>`.
+`<slot>` is placed above `.viewport`.
 
 ### `.bounding-box`
 
