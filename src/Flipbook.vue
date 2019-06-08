@@ -5,6 +5,8 @@
       canFlipRight,
       canZoomIn,
       canZoomOut,
+      page,
+      numPages,
       flipLeft,
       flipRight,
       zoomIn,
@@ -185,6 +187,13 @@ export default
       not @flip.direction and @currentPage < @nPages - @displayedPages
     canZoomIn: -> not @zooming and @zoomIndex < @nZooms - 1
     canZoomOut: -> not @zooming and @zoomIndex > 0
+    numPages: -> if @pages[0] == null then @nPages - 1 else @nPages
+    page: ->
+      if @pages[0] != null
+        @currentPage + 1
+      else
+        Math.max 1, @currentPage
+
     cursor: ->
       if @activeCursor
         @activeCursor
