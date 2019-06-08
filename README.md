@@ -6,7 +6,7 @@ Demo page is [here](https://ts1.github.io/flipbook-vue/).
 
 ## Installation
 
-Install as a module.
+Install as a module:
 
 ```
 npm i -S flipbook-vue
@@ -18,7 +18,7 @@ or
 yarn add flipbook-vue
 ```
 
-Or include in html.
+Or include in html:
 
 ```html
 <script src="https://unpkg.com/flipbook-vue"></script>
@@ -32,13 +32,12 @@ Or include in html.
 </template>
 
 <style>
-.flipbook .viewport {
+.flipbook {
   width: 90vw;
   height: 90vh;
 }
 </style>
 ```
-
 
 If installed as a module,
 
@@ -132,6 +131,8 @@ Example usage:
 
 For more practical usage, refer to [`src/App.vue`](https://github.com/ts1/flipbook-vue/blob/master/src/App.vue) (the demo page source).
 
+These properties and methods can also be referred through `$refs` to the `flipbook` component.
+
 ### `canFlipLeft`
 
 True if it can flip to previous page. 
@@ -147,6 +148,14 @@ True if it can zoom in.
 ### `canZoomOut`
 
 True if it can zoom out.
+
+### `page`
+
+Current page number (1 to `numPages`).
+
+### `numPages`
+
+Total number of pages.
 
 ### `flipLeft()`
 
@@ -176,7 +185,7 @@ There are some internal classes.
 
 ### `.viewport`
 
-An `<div>` element that contains everything but `<slot>`.
+A `<div>` element that contains everything but `<slot>`.
 `<slot>` is placed above `.viewport`.
 
 ### `.bounding-box`

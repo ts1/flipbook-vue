@@ -26,6 +26,9 @@
           :class="{ disabled: !flipbook.canZoomIn }"
           @click="flipbook.zoomIn"
         />
+        <span class="page-num">
+          Page {{ flipbook.page }} of {{ flipbook.numPages }}
+        </span>
         <minus-icon
           class="btn minus"
           :class="{ disabled: !flipbook.canZoomOut }"
@@ -115,11 +118,16 @@ a {
   padding: 10px 0;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 
 .action-bar .btn {
   font-size: 30px;
   color: #999;
+}
+
+.action-bar .btn svg {
+  bottom: 0;
 }
 
 .action-bar .btn:not(:first-child) {
@@ -139,6 +147,11 @@ a {
 .action-bar .btn.disabled {
   color: #666;
   pointer-events: none;
+}
+
+.action-bar .page-num {
+  font-size: 12px;
+  margin-left: 10px;
 }
 
 .flipbook .viewport {
