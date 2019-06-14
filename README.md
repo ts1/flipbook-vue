@@ -197,6 +197,11 @@ Suitable to give `box-shadow`.
 
 Supports modern browsers and IE 11.
 
+## Server side rendering
+
+This component does not support server-side rendering.
+Configure this component rendered only on client-side.
+
 ## License
 
 MIT
