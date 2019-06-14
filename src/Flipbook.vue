@@ -19,31 +19,29 @@
         zoom: zooming || zoom > 1,
         'drag-to-scroll': dragToScroll
       }"
-      :style="{ cursor: cursor }"
-      @touchstart="onTouchStart"
+      :style="{ cursor: cursor == 'grabbing' ? 'grabbing' : 'auto' }"
       @touchmove="onTouchMove"
+      @pointermove="onPointerMove"
+      @mousemove="onMouseMove"
       @touchend="onTouchEnd"
       @touchcancel="onTouchEnd"
-      @mousedown="onMouseDown"
-      @mousemove="onMouseMove"
-      @mouseup="onMouseUp"
-      @pointerdown="onPointerDown"
-      @pointermove="onPointerMove"
       @pointerup="onPointerUp"
       @pointercancel="onPointerUp"
+      @mouseup="onMouseUp"
       @wheel="onWheel"
     >
       <div class="container" :style="{ transform: `scale(${zoom})`, }">
+        <div
+          class="click-to-flip left"
+          :style="{ cursor: canFlipLeft ? 'pointer' : 'auto'}"
+          @click="flipLeft"
+        />
+        <div
+          class="click-to-flip right"
+          :style="{ cursor: canFlipRight ? 'pointer' : 'auto'}"
+          @click="flipRight"
+        />
         <div :style="{ transform: `translateX(${centerOffsetSmoothed}px)` }">
-          <div
-            class="bounding-box"
-            :style="{
-              left: boundingLeft + 'px',
-              top: yMargin + 'px',
-              width: boundingRight - boundingLeft + 'px',
-              height: pageHeight + 'px'
-            }"
-          />
           <img
             class="page fixed"
             :style="{
@@ -90,8 +88,20 @@
               :style="{ backgroundImage: lighting }"
             />
           </div>
+          <div
+            class="bounding-box"
+            :style="{
+              left: boundingLeft + 'px',
+              top: yMargin + 'px',
+              width: boundingRight - boundingLeft + 'px',
+              height: pageHeight + 'px',
+              cursor: cursor
+            }"
+            @touchstart="onTouchStart"
+            @pointerdown="onPointerDown"
+            @mousedown="onMouseDown"
+          />
         </div>
-        <div class="guard" />
       </div>
     </div>
   </div>
@@ -624,6 +634,7 @@ export default
       true
 
     swipeEnd: (touch) ->
+      return unless @touchStartX?
       @zoomAt touch if @maxMove < @swipeMin
       if @flip.direction != null and not @flip.auto
         if @flip.progress > 1/4
@@ -644,6 +655,7 @@ export default
     onPointerDown: (ev) ->
       @hasPointerEvents = true
       return if @hasTouchEvents
+      return if ev.which and ev.which != 1 # Ignore right-click
       @swipeStart ev
       try
         ev.target.setPointerCapture ev.pointerId
@@ -659,7 +671,9 @@ export default
       catch
 
     onMouseDown: (ev) ->
-      @swipeStart ev unless @hasTouchEvents or @hasPointerEvents
+      return if @hasTouchEvents or @hasPointerEvents
+      return if ev.which and ev.which != 1 # Ignore right-click
+      @swipeStart ev
     onMouseMove: (ev) ->
       @swipeMove ev unless @hasTouchEvents or @hasPointerEvents
     onMouseUp: (ev) ->
@@ -752,8 +766,25 @@ export default
   user-select: none;
 }
 
+.click-to-flip {
+  position: absolute;
+  width: 50%;
+  height: 100%;
+  top: 0;
+  user-select: none;
+}
+
+.click-to-flip.left {
+  left: 0;
+}
+
+.click-to-flip.right {
+  right: 0;
+}
+
 .bounding-box {
   position: absolute;
+  user-select: none;
 }
 
 .page {
@@ -775,14 +806,6 @@ export default
 }
 
 .polygon .lighting {
-  width: 100%;
-  height: 100%;
-}
-
-.guard {
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 100%;
   height: 100%;
 }
