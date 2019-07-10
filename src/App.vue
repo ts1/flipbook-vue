@@ -61,24 +61,8 @@ export default
   name: 'app'
   components: { Flipbook, LeftIcon, RightIcon, PlusIcon, MinusIcon, Ribbon }
   data: ->
-    pages: [
-      null,
-      'images/1.jpg'
-      'images/2.jpg'
-      'images/3.jpg'
-      'images/4.jpg'
-      'images/5.jpg'
-      'images/6.jpg'
-    ],
-    pagesHiRes: [
-      null,
-      'images-large/1.jpg'
-      'images-large/2.jpg'
-      'images-large/3.jpg'
-      'images-large/4.jpg'
-      'images-large/5.jpg'
-      'images-large/6.jpg'
-    ],
+    pages: [],
+    pagesHiRes: [],
     hasMouse: true
   mounted: ->
     window.addEventListener 'keydown', (ev) =>
@@ -87,6 +71,27 @@ export default
       flipbook.flipLeft() if ev.keyCode == 37 and flipbook.canFlipLeft
       flipbook.flipRight() if ev.keyCode == 39 and flipbook.canFlipRight
 
+    # Simulate asynchronous pages initialization
+    setTimeout (=>
+      @pages = [
+        null,
+        'images/1.jpg'
+        'images/2.jpg'
+        'images/3.jpg'
+        'images/4.jpg'
+        'images/5.jpg'
+        'images/6.jpg'
+      ]
+      @pagesHiRes = [
+        null,
+        'images-large/1.jpg'
+        'images-large/2.jpg'
+        'images-large/3.jpg'
+        'images-large/4.jpg'
+        'images-large/5.jpg'
+        'images-large/6.jpg'
+      ]
+    ), 1
 </script>
 
 <style>
