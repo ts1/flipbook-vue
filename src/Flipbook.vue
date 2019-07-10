@@ -710,6 +710,8 @@ export default
       return
 
   watch:
+    pages: -> @nPages = @pages.length
+
     currentPage: ->
       @leftPage = @currentPage
       @rightPage = @currentPage + 1
