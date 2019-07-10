@@ -1,4 +1,12 @@
-import { identity, multiply, translate, rotateY, toString } from 'rematrix'
+import {
+  identity
+  multiply
+  perspective
+  translate
+  translate3d
+  rotateY
+  toString
+} from 'rematrix'
 
 export default class Matrix
   constructor: (arg) ->
@@ -14,21 +22,13 @@ export default class Matrix
 
   multiply: (m) -> @m = multiply @m, m
 
-  perspective: (d) -> @multiply [
-    1, 0, 0, 0,
-    0, 1, 0, 0,
-    0, 0, 1, -1/d,
-    0, 0, 0, 1
-  ]
+  perspective: (d) -> @multiply perspective d
 
   transformX: (x) -> (x * @m[0] + @m[12]) / (x * @m[3] + @m[15])
 
   translate: (x, y) -> @multiply translate x, y
 
-  translate3d: (x, y, z) ->
-    m = translate x, y
-    m[14] = z
-    @multiply m
+  translate3d: (x, y, z) -> @multiply translate3d x, y, z
 
   rotateY: (deg) -> @multiply rotateY deg
 

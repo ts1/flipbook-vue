@@ -30,7 +30,7 @@
     "dist": "rollup -c rollup.config.js"
   },
   "dependencies": {
-    "rematrix": "^0.3.0"
+    "rematrix": "^0.4.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
