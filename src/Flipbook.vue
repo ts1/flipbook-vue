@@ -155,7 +155,6 @@ export default
     viewHeight: 0
     imageWidth: null
     imageHeight: null
-    nPages: @pages.length
     displayedPages: 1
     nImageLoad: 0
     nImageLoadTrigger: 0
@@ -163,7 +162,6 @@ export default
     currentPage: 0
     leftPage: 0
     rightPage: 1
-    nZooms: @zooms.length
     zoomIndex: 0
     zoom: @zooms[0]
     zooming: false
@@ -194,10 +192,10 @@ export default
       not @flip.direction and @currentPage >= @displayedPages and
         not (@displayedPages == 1 and not @pageUrl(@leftPage - 1))
     canFlipRight: ->
-      not @flip.direction and @currentPage < @nPages - @displayedPages
-    canZoomIn: -> not @zooming and @zoomIndex < @nZooms - 1
+      not @flip.direction and @currentPage < @pages.length - @displayedPages
+    canZoomIn: -> not @zooming and @zoomIndex < @zooms.length - 1
     canZoomOut: -> not @zooming and @zoomIndex > 0
-    numPages: -> if @pages[0] == null then @nPages - 1 else @nPages
+    numPages: -> if @pages[0] == null then @pages.length - 1 else @pages.length
     page: ->
       if @pages[0] != null
         @currentPage + 1
@@ -710,8 +708,6 @@ export default
       return
 
   watch:
-    pages: -> @nPages = @pages.length
-
     currentPage: ->
       @leftPage = @currentPage
       @rightPage = @currentPage + 1
