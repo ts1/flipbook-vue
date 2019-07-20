@@ -197,10 +197,11 @@ Suitable to give `box-shadow`.
 
 Supports modern browsers and IE 11.
 
-## Server side rendering
+## Server-side rendering, or Nuxt support
 
-This component does not support server-side rendering.
+Server-side rendering is not supported.
 Configure this component rendered only on client-side.
+See [this issue](https://github.com/ts1/flipbook-vue/issues/2#issuecomment-513428916).
 
 ## License
 
