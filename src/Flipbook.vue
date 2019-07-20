@@ -67,26 +67,35 @@
             @load="didLoadImage($event)"
           />
 
-          <div
-            v-for="[key, bgImage, lighting, bgPos, transform, z] in polygonArray"
-            class="polygon"
-            :key="key"
-            :class="{ blank: !bgImage }"
-            :style="{
-              backgroundImage: bgImage,
-              backgroundSize: polygonBgSize,
-              backgroundPosition: bgPos,
-              width: polygonWidth,
-              height: polygonHeight,
-              transform: transform,
-              zIndex: z
-            }"
-          >
+          <div :style="{ opacity: flip.opacity }">
             <div
-              class="lighting"
-              v-show="lighting.length"
-              :style="{ backgroundImage: lighting }"
-            />
+              v-for="[
+                key,
+                bgImage,
+                lighting,
+                bgPos,
+                transform,
+                z
+              ] in polygonArray"
+              class="polygon"
+              :key="key"
+              :class="{ blank: !bgImage }"
+              :style="{
+                backgroundImage: bgImage,
+                backgroundSize: polygonBgSize,
+                backgroundPosition: bgPos,
+                width: polygonWidth,
+                height: polygonHeight,
+                transform: transform,
+                zIndex: z,
+              }"
+            >
+              <div
+                class="lighting"
+                v-show="lighting.length"
+                :style="{ backgroundImage: lighting }"
+              />
+            </div>
           </div>
           <div
             class="bounding-box"
@@ -183,6 +192,7 @@ export default
       frontImage: null
       backImage: null
       auto: false
+      opacity: 1
     currentCenterOffset: null
     animatingCenter: false
     startScrollLeft: 0
@@ -340,6 +350,12 @@ export default
       if @displayedPages == 1 and direction == 'left'
         progress = 1 - progress
         direction = 'right'
+
+      @flip.opacity =
+        if @displayedPages == 1 and progress > .7
+          1 - (progress - .7) / .3
+        else
+          1
 
       image = if face == 'front' then @flip.frontImage else @flip.backImage
       bgImg = image && "url('#{image}')"
