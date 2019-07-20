@@ -201,7 +201,7 @@ Method to zoom out.
 You may need to specify the size of view port in your style sheet, directly to
 `<flipbook>` element, or to `.viewport` sub-element of flipbook.
 
-If the size is horizontally long, it displays two pages spread, suitable for desktop browsers.
+If the size is horizontally long and `singlePage` prop is `false` (default), it displays two pages spread, suitable for desktop browsers.
 If it's vertically long, it displays single pages, suitable for smartphones.
 
 There are some internal classes.
