@@ -294,9 +294,12 @@ export default
       Math.min(@scrollTopMax, Math.max(@scrollTopMin, @scrollTop))
 
   mounted: ->
-    window.addEventListener 'resize', (=> @onResize()), passive: true
+    window.addEventListener 'resize',  @onResize, passive: true
     @onResize()
     @preloadImages()
+
+  beforeDestroy: ->
+    window.removeEventListener 'resize',  @onResize, passive: true
 
   methods:
     onResize: ->
