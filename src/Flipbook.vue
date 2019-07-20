@@ -149,6 +149,9 @@ export default
     swipeMin:
       type: Number
       default: 3
+    singlePage:
+      type: Boolean
+      default: false
 
   data: ->
     viewWidth: 0
@@ -307,7 +310,8 @@ export default
       return unless viewport
       @viewWidth = viewport.clientWidth
       @viewHeight = viewport.clientHeight
-      @displayedPages = if @viewWidth > @viewHeight then 2 else 1
+      @displayedPages =
+        if @viewWidth > @viewHeight and not @singlePage then 2 else 1
       @currentPage &= ~1 if @displayedPages == 2
       @currentPage++ if @displayedPages == 1 and not @pageUrl(@leftPage)
       @minX = Infinity

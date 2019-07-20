@@ -14,6 +14,7 @@
       :pagesHiRes="pagesHiRes"
       v-slot="flipbook"
       ref="flipbook"
+      singlePage
     >
       <div class="action-bar">
         <left-icon
