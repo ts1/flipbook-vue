@@ -75,7 +75,7 @@ All other props are optional.
 
 ### `pagesHiRes`
 
-Array of high resolution version of image URLs.
+Array of high resolution versions of image URLs.
 They are used when zoomed.
 
 ### `flipDuration`
@@ -107,7 +107,7 @@ Defaults to 0.6.
 
 ### `perspective`
 
-Z-axis distance in pixel between the screen and the viewer.
+Z-axis distance in pixels between the screen and the viewer.
 Higher value gives less effect.
 Defaults to 2400.
 
@@ -202,6 +202,21 @@ Supports modern browsers and IE 11.
 Server-side rendering is not supported.
 Configure this component rendered only on client-side.
 See [this issue](https://github.com/ts1/flipbook-vue/issues/2#issuecomment-513428916).
+
+## Development
+
+To start development server with demo pages:
+
+```
+yarn
+yarn serve
+```
+
+To package for npm:
+
+```
+yarn dist
+```
 
 ## License
 
