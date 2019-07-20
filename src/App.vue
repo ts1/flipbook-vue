@@ -14,7 +14,10 @@
       :pagesHiRes="pagesHiRes"
       v-slot="flipbook"
       ref="flipbook"
-      singlePage
+      @flip-left-start="onFlipLeftStart"
+      @flip-left-end="onFlipLeftEnd"
+      @flip-right-start="onFlipRightStart"
+      @flip-right-end="onFlipRightEnd"
     >
       <div class="action-bar">
         <left-icon
@@ -65,6 +68,11 @@ export default
     pages: [],
     pagesHiRes: [],
     hasMouse: true
+  methods:
+    onFlipLeftStart: (page) -> console.log 'flip-left-start', page
+    onFlipLeftEnd: (page) -> console.log 'flip-left-end', page
+    onFlipRightStart: (page) -> console.log 'flip-right-start', page
+    onFlipRightEnd: (page) -> console.log 'flip-right-end', page
   mounted: ->
     window.addEventListener 'keydown', (ev) =>
       flipbook = @$refs.flipbook
@@ -75,7 +83,7 @@ export default
     # Simulate asynchronous pages initialization
     setTimeout (=>
       @pages = [
-        null,
+        null
         'images/1.jpg'
         'images/2.jpg'
         'images/3.jpg'

@@ -496,6 +496,7 @@ export default
       duration = @flipDuration * (1 - @flip.progress)
       startRatio = @flip.progress
       @flip.auto = true
+      @$emit "flip-#{@flip.direction}-start", @page
       animate = => requestAnimationFrame =>
         t = Date.now() - t0
         ratio = startRatio + t / duration
@@ -508,6 +509,7 @@ export default
             @currentPage -= @displayedPages
           else
             @currentPage += @displayedPages
+          @$emit "flip-#{@flip.direction}-end", @page
           if @displayedPages == 1 and @flip.direction == 'right'
             @flip.direction = null
           else

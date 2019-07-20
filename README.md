@@ -122,6 +122,24 @@ Defaults to 10.
 Force single page mode regardless of viewport size.
 Deafults to false.
 
+## Events
+
+### `flip-left-start`
+
+Fired when flip to left animation starts. Argument is page number before flip.
+
+### `flip-left-end`
+
+Fired when flip to left animation ends. Argument is page number after flip.
+
+### `flip-right-start`
+
+Fired when flip to right animation starts. Argument is page number before flip.
+
+### `flip-right-end`
+
+Fired when flip to right animation ends. Argument is page number after flip.
+
 ## Slot props
 
 This component exposes some properties and methods as slot properties.
