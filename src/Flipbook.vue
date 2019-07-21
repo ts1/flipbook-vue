@@ -323,9 +323,15 @@ export default
       @displayedPages =
         if @viewWidth > @viewHeight and not @singlePage then 2 else 1
       @currentPage &= ~1 if @displayedPages == 2
-      @currentPage++ if @displayedPages == 1 and not @pageUrl(@leftPage)
+      @fixFirstPage()
       @minX = Infinity
       @maxX = -Infinity
+
+    fixFirstPage: ->
+      @currentPage++ if @displayedPages == 1 and
+        @currentPage == 0 and
+        @pages.length and
+        not @pageUrl(0)
 
     pageUrl: (page, hiRes = false) ->
       if hiRes and @zoom > 1 and not @zooming
@@ -763,6 +769,8 @@ export default
         requestAnimationFrame => @$refs.viewport.scrollTop = val
       else
         @$refs.viewport.scrollTop = val
+
+    pages: -> @fixFirstPage()
 
 </script>
 

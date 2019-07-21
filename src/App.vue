@@ -92,7 +92,7 @@ export default
         'images/6.jpg'
       ]
       @pagesHiRes = [
-        null,
+        null
         'images-large/1.jpg'
         'images-large/2.jpg'
         'images-large/3.jpg'
