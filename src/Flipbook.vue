@@ -175,7 +175,7 @@ export default
     leftPage: 0
     rightPage: 1
     zoomIndex: 0
-    zoom: @zooms[0]
+    zoom: 1
     zooming: false
     touchStartX: null
     touchStartY: null
@@ -206,7 +206,7 @@ export default
         not (@displayedPages == 1 and not @pageUrl(@leftPage - 1))
     canFlipRight: ->
       not @flip.direction and @currentPage < @pages.length - @displayedPages
-    canZoomIn: -> not @zooming and @zoomIndex < @zooms.length - 1
+    canZoomIn: -> not @zooming and @zoomIndex < @zooms_.length - 1
     canZoomOut: -> not @zooming and @zoomIndex > 0
     numPages: -> if @pages[0] == null then @pages.length - 1 else @pages.length
     page: ->
@@ -214,16 +214,19 @@ export default
         @currentPage + 1
       else
         Math.max 1, @currentPage
+    zooms_: -> @zooms or [1]
 
     cursor: ->
       if @activeCursor
         @activeCursor
       else if IE
         'auto'
-      else if @zoomIndex < @zooms.length - 1
+      else if @canZoomIn
         'zoom-in'
-      else
+      else if @canZoomOut
         'zoom-out'
+      else
+        'grab'
 
     pageScale: ->
       vw = @viewWidth / @displayedPages
@@ -310,6 +313,7 @@ export default
     window.addEventListener 'resize',  @onResize, passive: true
     @onResize()
     @preloadImages()
+    @zoom = @zooms_[0]
 
   beforeDestroy: ->
     window.removeEventListener 'resize',  @onResize, passive: true
@@ -578,12 +582,12 @@ export default
     zoomIn: ->
       return unless @canZoomIn
       @zoomIndex += 1
-      @zoomTo @zooms[@zoomIndex]
+      @zoomTo @zooms_[@zoomIndex]
 
     zoomOut: ->
       return unless @canZoomOut
       @zoomIndex -= 1
-      @zoomTo @zooms[@zoomIndex]
+      @zoomTo @zooms_[@zoomIndex]
 
     zoomTo: (zoom, fixedX, fixedY) ->
       start = @zoom
@@ -623,8 +627,8 @@ export default
       rect = @$refs.viewport.getBoundingClientRect()
       x = touch.pageX - rect.left
       y = touch.pageY - rect.top
-      @zoomIndex = (@zoomIndex + 1) % @zooms.length
-      @zoomTo @zooms[@zoomIndex], x, y
+      @zoomIndex = (@zoomIndex + 1) % @zooms_.length
+      @zoomTo @zooms_[@zoomIndex], x, y
 
     swipeStart: (touch) ->
       @touchStartX = touch.pageX

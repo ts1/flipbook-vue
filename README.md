@@ -91,6 +91,7 @@ Defaults to 500.
 ### `zooms`
 
 Array of possible magnifications. 
+`null` is equivalent to `[1]` (no zoom).
 Defaults to `[1, 2, 4]`.
 
 ### `ambient`
