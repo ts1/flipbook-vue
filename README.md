@@ -114,14 +114,20 @@ Defaults to 2400.
 
 ### `nPolygons`
 
-How many rectangles a single page is horizontally splitted into.
+How many rectangles a single page is horizontally split into.
 Higher value gives higher quality rendering in exchange for performance.
 Defaults to 10.
 
 ### `singlePage`
 
 Force single page mode regardless of viewport size.
-Deafults to false.
+Defaults to false.
+
+### `forwardDirection`
+
+Reading direction.
+If your document is right-to-left, set this `"left"`.
+Default is `"right"`.
 
 ## Events
 
