@@ -51,7 +51,7 @@
               top: yMargin + 'px'
             }"
             :src="pageUrl(leftPage, true)"
-            v-if="pageUrl(leftPage, true)"
+            v-if="showLeftPage"
             @load="didLoadImage($event)"
           />
           <img
@@ -62,7 +62,7 @@
               left: viewWidth / 2 + 'px',
               top: yMargin + 'px'
             }"
-            v-if="displayedPages === 2 && pageUrl(rightPage, true)"
+            v-if="showRightPage"
             :src="pageUrl(rightPage, true)"
             @load="didLoadImage($event)"
           />
@@ -161,6 +161,9 @@ export default
     singlePage:
       type: Boolean
       default: false
+    forwardDirection:
+      validator: (val) -> val == 'right' or val == 'left'
+      default: 'right'
 
   data: ->
     viewWidth: 0
@@ -172,8 +175,8 @@ export default
     nImageLoadTrigger: 0
     imageLoadCallback: null
     currentPage: 0
-    leftPage: 0
-    rightPage: 1
+    firstPage: 0
+    secondPage: 1
     zoomIndex: 0
     zoom: 1
     zooming: false
@@ -202,10 +205,9 @@ export default
 
   computed:
     canFlipLeft: ->
-      not @flip.direction and @currentPage >= @displayedPages and
-        not (@displayedPages == 1 and not @pageUrl(@leftPage - 1))
+      if @forwardDirection == 'left' then @canGoForward else @canGoBack
     canFlipRight: ->
-      not @flip.direction and @currentPage < @pages.length - @displayedPages
+      if @forwardDirection == 'right' then @canGoForward else @canGoBack
     canZoomIn: -> not @zooming and @zoomIndex < @zooms_.length - 1
     canZoomOut: -> not @zooming and @zoomIndex > 0
     numPages: -> if @pages[0] == null then @pages.length - 1 else @pages.length
@@ -214,7 +216,25 @@ export default
         @currentPage + 1
       else
         Math.max 1, @currentPage
+
     zooms_: -> @zooms or [1]
+
+    canGoForward: ->
+      not @flip.direction and @currentPage < @pages.length - @displayedPages
+    canGoBack: ->
+      not @flip.direction and @currentPage >= @displayedPages and
+        not (@displayedPages == 1 and not @pageUrl(@firstPage - 1))
+    leftPage: ->
+      if @forwardDirection == 'right' or @displayedPages == 1
+        @firstPage
+      else
+        @secondPage
+    rightPage: ->
+      if @forwardDirection == 'left' then @firstPage else @secondPage
+    showLeftPage: ->
+      @pageUrl(@leftPage)
+    showRightPage: ->
+      @pageUrl(@rightPage) and @displayedPages == 2
 
     cursor: ->
       if @activeCursor
@@ -357,9 +377,9 @@ export default
       progress = @flip.progress
       direction = @flip.direction
 
-      if @displayedPages == 1 and direction == 'left'
+      if @displayedPages == 1 and direction != @forwardDirection
         progress = 1 - progress
-        direction = 'right'
+        direction = @forwardDirection
 
       @flip.opacity =
         if @displayedPages == 1 and progress > .7
@@ -375,9 +395,21 @@ export default
       pageX = @xMargin
       originRight = false
       if @displayedPages == 1
-        if face == 'back'
-          originRight = true
-          pageX = @xMargin - @pageWidth
+        if @forwardDirection == 'right'
+          if face == 'back'
+            originRight = true
+            pageX = @xMargin - @pageWidth
+        else
+          if direction == 'left'
+            if face == 'back'
+              pageX = @pageWidth - @xMargin
+            else
+              originRight = true
+          else
+            if face == 'front'
+              pageX = @pageWidth - @xMargin
+            else
+              originRight = true
       else
         if direction == 'left'
           if face == 'back'
@@ -489,32 +521,32 @@ export default
       gradients.join(',')
 
     flipStart: (direction, auto) ->
-      if direction == 'left'
+      if direction != @forwardDirection
         if @displayedPages == 1
           @flip.frontImage = @pageUrl(@currentPage - 1)
           @flip.backImage = null
         else
-          @flip.frontImage = @pageUrl(@leftPage)
+          @flip.frontImage = @pageUrl(@firstPage)
           @flip.backImage = @pageUrl(@currentPage - @displayedPages + 1)
       else
         if @displayedPages == 1
           @flip.frontImage = @pageUrl(@currentPage)
           @flip.backImage = null
         else
-          @flip.frontImage = @pageUrl(@rightPage)
+          @flip.frontImage = @pageUrl(@secondPage)
           @flip.backImage = @pageUrl(@currentPage + @displayedPages)
 
       @flip.direction = direction
       @flip.progress = 0
       requestAnimationFrame => requestAnimationFrame =>
-        if @flip.direction == 'left'
+        if @flip.direction != @forwardDirection
           if @displayedPages == 2
-            @leftPage = @currentPage - @displayedPages
+            @firstPage = @currentPage - @displayedPages
         else
           if @displayedPages == 1
-            @leftPage = @currentPage + @displayedPages
+            @firstPage = @currentPage + @displayedPages
           else
-            @rightPage = @currentPage + 1 + @displayedPages
+            @secondPage = @currentPage + 1 + @displayedPages
         @flipAuto(true) if auto
 
     flipAuto: (ease) ->
@@ -531,12 +563,12 @@ export default
         if ratio < 1
           animate()
         else
-          if @flip.direction == 'left'
+          if @flip.direction != @forwardDirection
             @currentPage -= @displayedPages
           else
             @currentPage += @displayedPages
           @$emit "flip-#{@flip.direction}-end", @page
-          if @displayedPages == 1 and @flip.direction == 'right'
+          if @displayedPages == 1 and @flip.direction == @forwardDirection
             @flip.direction = null
           else
             @onImageLoad 1, => @flip.direction = null
@@ -556,9 +588,9 @@ export default
         if ratio > 0
           animate()
         else
-          @leftPage = @currentPage
-          @rightPage = @currentPage + 1
-          if @displayedPages == 1 and @flip.direction == 'left'
+          @firstPage = @currentPage
+          @secondPage = @currentPage + 1
+          if @displayedPages == 1 and @flip.direction != @forwardDirection
             @flip.direction = null
           else
             @onImageLoad 1, => @flip.direction = null
@@ -744,8 +776,8 @@ export default
 
   watch:
     currentPage: ->
-      @leftPage = @currentPage
-      @rightPage = @currentPage + 1
+      @firstPage = @currentPage
+      @secondPage = @currentPage + 1
       @preloadImages()
 
     centerOffset: ->
