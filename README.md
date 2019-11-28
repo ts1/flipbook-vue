@@ -129,6 +129,11 @@ Reading direction.
 If your document is right-to-left, set this `"left"`.
 Default is `"right"`.
 
+### `centering`
+
+Enable centering of the cover pages.
+Default is `true`.
+
 ## Events
 
 ### `flip-left-start`

@@ -164,6 +164,9 @@ export default
     forwardDirection:
       validator: (val) -> val == 'right' or val == 'left'
       default: 'right'
+    centering:
+      type: Boolean
+      default: true
 
   data: ->
     viewWidth: 0
@@ -287,7 +290,11 @@ export default
             @viewWidth / 2
         if x > @maxX then x else @maxX
     centerOffset: ->
-      retval = Math.round(@viewWidth / 2 - (@boundingLeft + @boundingRight) / 2)
+      retval =
+        if @centering
+          Math.round(@viewWidth / 2 - (@boundingLeft + @boundingRight) / 2)
+        else
+          0
       if @currentCenterOffset == null and @imageWidth != null
         @currentCenterOffset = retval
       retval
