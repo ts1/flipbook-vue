@@ -18,6 +18,8 @@
       @flip-left-end="onFlipLeftEnd"
       @flip-right-start="onFlipRightStart"
       @flip-right-end="onFlipRightEnd"
+      @zoom-start="onZoomStart"
+      @zoom-end="onZoomEnd"
     >
       <div class="action-bar">
         <left-icon
@@ -73,6 +75,8 @@ export default
     onFlipLeftEnd: (page) -> console.log 'flip-left-end', page
     onFlipRightStart: (page) -> console.log 'flip-right-start', page
     onFlipRightEnd: (page) -> console.log 'flip-right-end', page
+    onZoomStart: (zoom) -> console.log 'zoom-start', zoom
+    onZoomEnd: (zoom) -> console.log 'zoom-end', zoom
   mounted: ->
     window.addEventListener 'keydown', (ev) =>
       flipbook = @$refs.flipbook

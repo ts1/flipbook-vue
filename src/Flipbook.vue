@@ -643,6 +643,7 @@ export default
 
       t0 = Date.now()
       @zooming = true
+      @$emit 'zoom-start', zoom
       animate = => requestAnimationFrame =>
         t = Date.now() - t0
         ratio = t / @zoomDuration
@@ -654,6 +655,7 @@ export default
         if t < @zoomDuration
           animate()
         else
+          @$emit 'zoom-end', zoom
           @zooming = false
           @zoom = zoom
           @scrollLeft = endX
