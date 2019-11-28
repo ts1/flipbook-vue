@@ -12,6 +12,7 @@
       class="flipbook"
       :pages="pages"
       :pagesHiRes="pagesHiRes"
+      :startPage="pageNum"
       v-slot="flipbook"
       ref="flipbook"
       @flip-left-start="onFlipLeftStart"
@@ -70,13 +71,21 @@ export default
     pages: [],
     pagesHiRes: [],
     hasMouse: true
+    pageNum: null
   methods:
     onFlipLeftStart: (page) -> console.log 'flip-left-start', page
-    onFlipLeftEnd: (page) -> console.log 'flip-left-end', page
+    onFlipLeftEnd: (page) ->
+      console.log 'flip-left-end', page
+      window.location.hash = '#' + page
     onFlipRightStart: (page) -> console.log 'flip-right-start', page
-    onFlipRightEnd: (page) -> console.log 'flip-right-end', page
+    onFlipRightEnd: (page) ->
+      console.log 'flip-right-end', page
+      window.location.hash = '#' + page
     onZoomStart: (zoom) -> console.log 'zoom-start', zoom
     onZoomEnd: (zoom) -> console.log 'zoom-end', zoom
+    setPageFromHash: ->
+      n = parseInt window.location.hash.slice(1), 10
+      @pageNum = n if isFinite n
   mounted: ->
     window.addEventListener 'keydown', (ev) =>
       flipbook = @$refs.flipbook
@@ -105,6 +114,9 @@ export default
         'images-large/6.jpg'
       ]
     ), 1
+
+    window.addEventListener 'hashchange', @setPageFromHash
+    @setPageFromHash()
 </script>
 
 <style>

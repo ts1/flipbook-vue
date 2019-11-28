@@ -167,6 +167,9 @@ export default
     centering:
       type: Boolean
       default: true
+    startPage:
+      type: Number
+      default: null
 
   data: ->
     viewWidth: 0
@@ -298,6 +301,7 @@ export default
       if @currentCenterOffset == null and @imageWidth != null
         @currentCenterOffset = retval
       retval
+
     centerOffsetSmoothed: -> Math.round(@currentCenterOffset)
 
     dragToScroll: -> not @hasTouchEvents
@@ -341,6 +345,7 @@ export default
     @onResize()
     @preloadImages()
     @zoom = @zooms_[0]
+    @goToPage @startPage
 
   beforeDestroy: ->
     window.removeEventListener 'resize',  @onResize, passive: true
@@ -783,6 +788,19 @@ export default
               @preloadedImages[url] = img
       return
 
+    goToPage: (p) ->
+      return if p == null or p == @page
+      if @pages[0] == null
+        if @displayedPages == 2 and p == 1
+          @currentPage = 0
+        else
+          @currentPage = p
+      else
+        @currentPage = p - 1
+      @minX = Infinity
+      @maxX = -Infinity
+      @currentCenterOffset = @centerOffset
+
   watch:
     currentPage: ->
       @firstPage = @currentPage
@@ -815,8 +833,13 @@ export default
       else
         @$refs.viewport.scrollTop = val
 
-    pages: -> @fixFirstPage()
+    pages: (after, before) ->
+      @fixFirstPage()
+      if not before?.length and after?.length
+        if @startPage > 1 and after[0] == null
+          @currentPage++
 
+    startPage: (p) -> @goToPage p
 </script>
 
 <style scoped>
