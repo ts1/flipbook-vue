@@ -134,6 +134,11 @@ Default is `"right"`.
 Enable centering of the cover pages.
 Default is `true`.
 
+### `startPage`
+
+Page number (>= 1) to open.
+Default is `null`.
+
 ## Events
 
 ### `flip-left-start`
@@ -151,6 +156,16 @@ Fired when flip to right animation starts. Argument is page number before flip.
 ### `flip-right-end`
 
 Fired when flip to right animation ends. Argument is page number after flip.
+
+### `zoom-start`
+
+Fired when zoom-in/out animation starts.
+Argument is magnification after zoom.
+
+### `zoom-end`
+
+Fired when zoom-in/out animation ends.
+Argument is magnification after zoom.
 
 ## Slot props
 
