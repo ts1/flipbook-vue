@@ -41,7 +41,7 @@
           :style="{ cursor: canFlipRight ? 'pointer' : 'auto'}"
           @click="flipRight"
         />
-        <div :style="{ transform: `translate3d(${centerOffsetSmoothed}px, 0, 0)` }">
+        <div :style="{ transform: `translateX(${centerOffsetSmoothed}px)` }">
           <img
             class="page fixed"
             :style="{
@@ -799,6 +799,7 @@ export default
         @currentPage = p - 1
       @minX = Infinity
       @maxX = -Infinity
+      @currentCenterOffset = @centerOffset
 
   watch:
     currentPage: ->
