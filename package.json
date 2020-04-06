@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.7.0",
-    "@vue/cli-service": "^3.7.0",
+    "@vue/cli-service": "^4.3.0",
     "autoprefixer": "^9.5.1",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.4.1",
