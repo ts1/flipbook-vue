@@ -26,7 +26,7 @@
   },
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build --dest docs",
+    "build": "vue-cli-service build --dest demo",
     "dist": "rollup -c rollup.config.js"
   },
   "dependencies": {
