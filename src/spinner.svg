@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="500" height="500" viewBox="0 0 500 500" fill="transparent" style="background-color: #fff">
+  <circle
+    cx="250"
+    cy="250"
+    r="48"
+    stroke="#333"
+    stroke-width="2"
+    stroke-dasharray="271 30"
+  >
+    <animateTransform
+      attributeName="transform"
+      attributeType="XML"
+      type="rotate"
+      from="0 250 250"
+      to="360 250 250"
+      dur="1s"
+      repeatCount="indefinite"
+    />
+  </circle>
+</svg>

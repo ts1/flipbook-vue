@@ -1,8 +1,9 @@
+import buble from '@rollup/plugin-buble'
+import resolve from '@rollup/plugin-node-resolve'
+import commonjs from '@rollup/plugin-commonjs'
+import url from '@rollup/plugin-url'
 import vue from 'rollup-plugin-vue'
-import buble from 'rollup-plugin-buble'
 import coffeescript from 'rollup-plugin-coffee-script'
-import resolve from 'rollup-plugin-node-resolve'
-import commonjs from 'rollup-plugin-commonjs'
 import { terser } from 'rollup-plugin-terser'
 import autoprefixer from 'autoprefixer'
 import { name, version } from './package.json'
@@ -24,7 +25,8 @@ const plugins = [
     template: { isProduction: true }
   }),
   coffeescript(),
-  buble()
+  buble(),
+  url(),
 ]
 
 export default [{

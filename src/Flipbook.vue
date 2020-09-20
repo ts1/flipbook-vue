@@ -50,7 +50,7 @@
               left: xMargin + 'px',
               top: yMargin + 'px'
             }"
-            :src="pageUrl(leftPage, true)"
+            :src="pageUrlLoading(leftPage, true)"
             v-if="showLeftPage"
             @load="didLoadImage($event)"
           />
@@ -63,7 +63,7 @@
               top: yMargin + 'px'
             }"
             v-if="showRightPage"
-            :src="pageUrl(rightPage, true)"
+            :src="pageUrlLoading(rightPage, true)"
             @load="didLoadImage($event)"
           />
 
@@ -81,7 +81,7 @@
               :key="key"
               :class="{ blank: !bgImage }"
               :style="{
-                backgroundImage: bgImage,
+                backgroundImage: bgImage && `url(${loadImage(bgImage)})`,
                 backgroundSize: polygonBgSize,
                 backgroundPosition: bgPos,
                 width: polygonWidth,
@@ -118,6 +118,8 @@
 
 <script lang="coffee">
 import Matrix from './matrix'
+import ImageLoader from './ImageLoader'
+import spinner from './spinner.svg'
 
 easeIn = (x) -> Math.pow(x, 2)
 easeOut = (x) -> 1 - easeIn(1 - x)
@@ -170,6 +172,9 @@ export default
     startPage:
       type: Number
       default: null
+    loadingImage:
+      type: String
+      default: spinner
 
   data: ->
     viewWidth: 0
@@ -208,6 +213,7 @@ export default
     startScrollTop: 0
     scrollLeft: 0
     scrollTop: 0
+    imageLoader: null
 
   computed:
     canFlipLeft: ->
@@ -341,9 +347,9 @@ export default
       Math.min(@scrollTopMax, Math.max(@scrollTopMin, @scrollTop))
 
   mounted: ->
+    @imageLoader = new ImageLoader @loadingImage
     window.addEventListener 'resize',  @onResize, passive: true
     @onResize()
-    @preloadImages()
     @zoom = @zooms_[0]
     @goToPage @startPage
 
@@ -369,11 +375,17 @@ export default
         @pages.length and
         not @pageUrl(0)
 
-    pageUrl: (page, hiRes = false) ->
+    pageUrl: (page, hiRes=false) ->
       if hiRes and @zoom > 1 and not @zooming
         url = @pagesHiRes[page]
         return url if url
       @pages[page] or null
+
+    pageUrlLoading: (page, hiRes=false) ->
+      # High-res image doesn't use 'loading'
+      return @pageUrl(page, true) if hiRes
+      url = @pages[page]
+      if url then @loadImage url else null
 
     flipLeft: ->
       return unless @canFlipLeft
@@ -399,8 +411,11 @@ export default
         else
           1
 
-      image = if face == 'front' then @flip.frontImage else @flip.backImage
-      bgImg = image && "url('#{image}')"
+      image =
+        if face == 'front'
+          @flip.frontImage
+        else
+          @flip.backImage
 
       polygonWidth = @pageWidth / @nPolygons
 
@@ -496,7 +511,7 @@ export default
 
         radian += dRadian
         rotate += dRotate
-        [face+i, bgImg, lighting, bgPos, m.toString(), Math.abs(Math.round(z))]
+        [face+i, image, lighting, bgPos, m.toString(), Math.abs(Math.round(z))]
 
     computeLighting: (rot, dRotate) ->
       gradients = []
@@ -618,6 +633,7 @@ export default
       if @imageWidth == null
         @imageWidth = (ev.target or ev.path[0]).naturalWidth
         @imageHeight = (ev.target or ev.path[0]).naturalHeight
+        @preloadImages()
       return unless @imageLoadCallback
       if ++@nImageLoad >= @nImageLoadTrigger
         @imageLoadCallback()
@@ -769,23 +785,12 @@ export default
         ev.preventDefault() if ev.cancelable
 
     preloadImages: (hiRes = false) ->
-      if Object.keys(@preloadedImages).length >= 10
-        @preloadedImages = {}
+      return
       for i in [@currentPage - 3 .. @currentPage + 3]
-        url = @pageUrl i
-        if url
-          unless @preloadedImages[url]
-            img = new Image()
-            img.src = url
-            @preloadedImages[url] = img
+        @pageUrlLoading i # this preloads image
       if hiRes
         for i in [@currentPage ... @currentPage + @displayedPages]
-          url = @pagesHiRes[i]
-          if url
-            unless @preloadedImages[url]
-              img = new Image()
-              img.src = url
-              @preloadedImages[url] = img
+          @imageLoader @pagesHiRes[i]
       return
 
     goToPage: (p) ->
@@ -800,6 +805,14 @@ export default
       @minX = Infinity
       @maxX = -Infinity
       @currentCenterOffset = @centerOffset
+
+    loadImage: (url) ->
+      if @imageWidth == null
+        # First loaded image defines the image width and height.
+        # So it must be true image, not 'loading' image.
+        url
+      else
+        @imageLoader.load url
 
   watch:
     currentPage: ->
