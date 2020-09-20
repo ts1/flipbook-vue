@@ -118,7 +118,6 @@
 
 <script lang="coffee">
 import Matrix from './matrix'
-import ImageLoader from './ImageLoader'
 import spinner from './spinner.svg'
 
 easeIn = (x) -> Math.pow(x, 2)
@@ -213,7 +212,7 @@ export default
     startScrollTop: 0
     scrollLeft: 0
     scrollTop: 0
-    imageLoader: null
+    loadedImages: {}
 
   computed:
     canFlipLeft: ->
@@ -347,7 +346,6 @@ export default
       Math.min(@scrollTopMax, Math.max(@scrollTopMin, @scrollTop))
 
   mounted: ->
-    @imageLoader = new ImageLoader @loadingImage
     window.addEventListener 'resize',  @onResize, passive: true
     @onResize()
     @zoom = @zooms_[0]
@@ -811,7 +809,13 @@ export default
         # So it must be true image, not 'loading' image.
         url
       else
-        @imageLoader.load url
+        if @loadedImages[url]
+          url
+        else
+          img = new Image
+          img.onload = => @$set @loadedImages, url, true
+          img.src = url
+          @loadingImage
 
   watch:
     currentPage: ->
