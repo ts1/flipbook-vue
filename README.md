@@ -139,6 +139,11 @@ Default is `true`.
 Page number (>= 1) to open.
 Default is `null`.
 
+### `loadingImage`
+
+URL of an image that is displayed while page is loading.
+By default internal animated SVG is used.
+
 ## Events
 
 ### `flip-left-start`
@@ -272,4 +277,4 @@ yarn dist
 
 MIT
 
-Copyright © 2019 Takeshi Sone.
+Copyright © 2019-2020 Takeshi Sone.
