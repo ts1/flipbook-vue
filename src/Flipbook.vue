@@ -785,7 +785,6 @@ export default
         ev.preventDefault() if ev.cancelable
 
     preloadImages: (hiRes = false) ->
-      return
       for i in [@currentPage - 3 .. @currentPage + 3]
         @pageUrlLoading i # this preloads image
       if hiRes
