@@ -1,5 +1,8 @@
 # flipbook-vue
 
+[![npm version](https://badge.fury.io/js/flipbook-vue.svg)](https://badge.fury.io/js/flipbook-vue)
+![demo](https://github.com/ts1/flipbook-vue/workflows/demo/badge.svg)
+
 `flipbook-vue` is a Vue component that displays images in 3D page flip effect.
 
 Demo page is [here](https://ts1.github.io/flipbook-vue/).
