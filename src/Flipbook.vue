@@ -382,10 +382,10 @@ export default
       @pages[page] or null
 
     pageUrlLoading: (page, hiRes=false) ->
+      url = @pageUrl(page, hiRes)
       # High-res image doesn't use 'loading'
-      return @pageUrl(page, true) if hiRes
-      url = @pages[page]
-      if url then @loadImage url else null
+      return url if hiRes and @zoom > 1 and not @zooming
+      url and @loadImage url
 
     flipLeft: ->
       return unless @canFlipLeft

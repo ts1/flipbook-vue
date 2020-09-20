@@ -18,5 +18,3 @@ export default class ImageLoader
       img.src = url
       Vue.set @images, url, entry # Make this reactive
       @loading
-
-  isLoaded: (url) -> @images[url]?.loaded
