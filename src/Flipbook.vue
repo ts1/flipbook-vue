@@ -787,7 +787,9 @@ export default
         @pageUrlLoading i # this preloads image
       if hiRes
         for i in [@currentPage ... @currentPage + @displayedPages]
-          @imageLoader @pagesHiRes[i]
+          src = @pagesHiRes[i]
+          if src
+            (new Image).src = src
       return
 
     goToPage: (p) ->
