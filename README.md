@@ -95,7 +95,7 @@ Defaults to 500.
 
 Array of possible magnifications. 
 `null` is equivalent to `[1]` (no zoom).
-Defaults to `[1, 2, 4]`.
+Defaults to `[1, 2, 4]`. _NOTE_ : Do **NOT** pass an empty array.
 
 ### `ambient`
 
@@ -193,11 +193,11 @@ These properties and methods can also be referred through `$refs` to the `flipbo
 
 ### `canFlipLeft`
 
-True if it can flip to previous page. 
+True if it can flip to previous page. _NOTE_: Can return false if currently being animated.
 
 ### `canFlipRight`
 
-True if it can flip to next page. 
+True if it can flip to next page. _NOTE_: Can return false if currently being animated.
 
 ### `canZoomIn`
 
