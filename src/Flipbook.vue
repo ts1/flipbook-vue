@@ -30,7 +30,7 @@
       @mouseup="onMouseUp"
       @wheel="onWheel"
     >
-      <div class="container" :style="{ transform: `scale(${zoom})`, }">
+      <div class="flipbook-container" :style="{ transform: `scale(${zoom})` }">
         <div
           class="click-to-flip left"
           :style="{ cursor: canFlipLeft ? 'pointer' : 'auto'}"
@@ -875,7 +875,7 @@ export default
   overflow: hidden;
 }
 
-.container {
+.flipbook-container {
   position: relative;
   width: 100%;
   height: 100%;
