@@ -50,6 +50,7 @@
     "svgo-loader": "^2.2.1",
     "vue": "^2.6.10",
     "vue-cli-plugin-coffeescript": "^0.0.3",
+    "vue-cli-plugin-pug": "~2.0.0",
     "vue-material-design-icons": "^3.2.0",
     "vue-ribbon": "^1.0.1",
     "vue-template-compiler": "^2.5.21"
