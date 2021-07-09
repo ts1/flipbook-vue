@@ -174,6 +174,9 @@ export default
     loadingImage:
       type: String
       default: spinner
+    clickToZoom:
+      type: Boolean
+      default: true
 
   data: ->
     viewWidth: 0
@@ -252,9 +255,9 @@ export default
         @activeCursor
       else if IE
         'auto'
-      else if @canZoomIn
+      else if @clickToZoom and @canZoomIn
         'zoom-in'
-      else if @canZoomOut
+      else if @clickToZoom and @canZoomOut
         'zoom-out'
       else
         'grab'
@@ -728,7 +731,7 @@ export default
 
     swipeEnd: (touch) ->
       return unless @touchStartX?
-      @zoomAt touch if @maxMove < @swipeMin
+      @zoomAt touch if @clickToZoom and @maxMove < @swipeMin
       if @flip.direction != null and not @flip.auto
         if @flip.progress > 1/4
           @flipAuto(false)

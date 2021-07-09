@@ -147,6 +147,10 @@ Default is `null`.
 URL of an image that is displayed while page is loading.
 By default internal animated SVG is used.
 
+### `clickToZoom`
+
+Zoom in or out on click or tap. Default is `true`.
+
 ## Events
 
 ### `flip-left-start`
