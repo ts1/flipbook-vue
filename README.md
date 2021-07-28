@@ -280,8 +280,9 @@ To package for npm:
 yarn dist
 ```
 
-## Credit
+## Credits
 
+- vivekKodira: README correction
 - siderisng: `dragToFlip`
 
 ## License
