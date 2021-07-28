@@ -1,23 +1,25 @@
 <template>
   <div>
-    <slot v-bind="{
-      canFlipLeft,
-      canFlipRight,
-      canZoomIn,
-      canZoomOut,
-      page,
-      numPages,
-      flipLeft,
-      flipRight,
-      zoomIn,
-      zoomOut
-    }" />
+    <slot
+      v-bind="{
+        canFlipLeft,
+        canFlipRight,
+        canZoomIn,
+        canZoomOut,
+        page,
+        numPages,
+        flipLeft,
+        flipRight,
+        zoomIn,
+        zoomOut,
+      }"
+    />
     <div
       class="viewport"
       ref="viewport"
       :class="{
         zoom: zooming || zoom > 1,
-        'drag-to-scroll': dragToScroll
+        'drag-to-scroll': dragToScroll,
       }"
       :style="{ cursor: cursor == 'grabbing' ? 'grabbing' : 'auto' }"
       @touchmove="onTouchMove"
@@ -33,12 +35,12 @@
       <div class="flipbook-container" :style="{ transform: `scale(${zoom})` }">
         <div
           class="click-to-flip left"
-          :style="{ cursor: canFlipLeft ? 'pointer' : 'auto'}"
+          :style="{ cursor: canFlipLeft ? 'pointer' : 'auto' }"
           @click="flipLeft"
         />
         <div
           class="click-to-flip right"
-          :style="{ cursor: canFlipRight ? 'pointer' : 'auto'}"
+          :style="{ cursor: canFlipRight ? 'pointer' : 'auto' }"
           @click="flipRight"
         />
         <div :style="{ transform: `translateX(${centerOffsetSmoothed}px)` }">
@@ -48,7 +50,7 @@
               width: pageWidth + 'px',
               height: pageHeight + 'px',
               left: xMargin + 'px',
-              top: yMargin + 'px'
+              top: yMargin + 'px',
             }"
             :src="pageUrlLoading(leftPage, true)"
             v-if="showLeftPage"
@@ -60,7 +62,7 @@
               width: pageWidth + 'px',
               height: pageHeight + 'px',
               left: viewWidth / 2 + 'px',
-              top: yMargin + 'px'
+              top: yMargin + 'px',
             }"
             v-if="showRightPage"
             :src="pageUrlLoading(rightPage, true)"
@@ -75,7 +77,7 @@
                 lighting,
                 bgPos,
                 transform,
-                z
+                z,
               ] in polygonArray"
               class="polygon"
               :key="key"
@@ -104,7 +106,7 @@
               top: yMargin + 'px',
               width: boundingRight - boundingLeft + 'px',
               height: pageHeight + 'px',
-              cursor: cursor
+              cursor: cursor,
             }"
             @touchstart="onTouchStart"
             @pointerdown="onPointerDown"
@@ -175,6 +177,9 @@ export default
       type: String
       default: spinner
     clickToZoom:
+      type: Boolean
+      default: true
+    dragToFlip:
       type: Boolean
       default: true
 
@@ -259,8 +264,10 @@ export default
         'zoom-in'
       else if @clickToZoom and @canZoomOut
         'zoom-out'
-      else
+      else if @dragToFlip
         'grab'
+      else
+        'auto'
 
     pageScale: ->
       vw = @viewWidth / @displayedPages
@@ -697,7 +704,7 @@ export default
       @touchStartX = touch.pageX
       @touchStartY = touch.pageY
       @maxMove = 0
-      if @zoom <= 1
+      if @zoom <= 1 and @dragToFlip
         @activeCursor = 'grab'
       else
         @startScrollLeft = @$refs.viewport.scrollLeft
@@ -705,6 +712,7 @@ export default
         @activeCursor = 'all-scroll'
 
     swipeMove: (touch) ->
+      return if not @dragToFlip
       return unless @touchStartX?
       x = touch.pageX - @touchStartX
       y = touch.pageY - @touchStartY
