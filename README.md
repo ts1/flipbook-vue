@@ -151,6 +151,10 @@ By default internal animated SVG is used.
 
 Zoom in or out on click or tap. Default is `true`.
 
+### `dragToFlip`
+
+Flip page by dragging/swiping. Default is `true`.
+
 ## Events
 
 ### `flip-left-start`
