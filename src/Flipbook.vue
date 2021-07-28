@@ -179,9 +179,9 @@ export default
     clickToZoom:
       type: Boolean
       default: true
-    disableDragToFlip:
+    dragToFlip:
       type: Boolean
-      default: false
+      default: true
 
   data: ->
     viewWidth: 0
@@ -264,8 +264,10 @@ export default
         'zoom-in'
       else if @clickToZoom and @canZoomOut
         'zoom-out'
-      else if not @disableDragToFlip
+      else if @dragToFlip
         'grab'
+      else
+        'auto'
 
     pageScale: ->
       vw = @viewWidth / @displayedPages
@@ -702,7 +704,7 @@ export default
       @touchStartX = touch.pageX
       @touchStartY = touch.pageY
       @maxMove = 0
-      if @zoom <= 1 && not @disableDragToFlip
+      if @zoom <= 1 and @dragToFlip
         @activeCursor = 'grab'
       else
         @startScrollLeft = @$refs.viewport.scrollLeft
@@ -710,7 +712,7 @@ export default
         @activeCursor = 'all-scroll'
 
     swipeMove: (touch) ->
-      return if @disableDragToFlip
+      return if not @dragToFlip
       return unless @touchStartX?
       x = touch.pageX - @touchStartX
       y = touch.pageY - @touchStartY
