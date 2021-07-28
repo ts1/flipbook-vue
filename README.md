@@ -280,8 +280,12 @@ To package for npm:
 yarn dist
 ```
 
+## Credit
+
+- siderisng: `dragToFlip`
+
 ## License
 
 MIT
 
-Copyright © 2019-2020 Takeshi Sone.
+Copyright © 2019-2021 Takeshi Sone.
