@@ -704,15 +704,16 @@ export default
       @touchStartX = touch.pageX
       @touchStartY = touch.pageY
       @maxMove = 0
-      if @zoom <= 1 and @dragToFlip
-        @activeCursor = 'grab'
+      if @zoom <= 1
+        if @dragToFlip
+          @activeCursor = 'grab'
       else
         @startScrollLeft = @$refs.viewport.scrollLeft
         @startScrollTop = @$refs.viewport.scrollTop
         @activeCursor = 'all-scroll'
 
     swipeMove: (touch) ->
-      return if not @dragToFlip
+      return unless @dragToFlip
       return unless @touchStartX?
       x = touch.pageX - @touchStartX
       y = touch.pageY - @touchStartY
