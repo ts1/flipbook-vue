@@ -827,7 +827,11 @@ export default
           url
         else
           img = new Image
-          img.onload = => @$set @loadedImages, url, true
+          img.onload = =>
+            if @$set
+              @$set @loadedImages, url, true
+            else
+              @loadedImages[url] = true
           img.src = url
           @loadingImage
 

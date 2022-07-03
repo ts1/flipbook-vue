@@ -4,10 +4,7 @@
     :class="{ 'has-mouse': hasMouse }"
     @touchstart="hasMouse = false"
   >
-    <Ribbon
-      text="Fork me on GitHub"
-      url="https://github.com/ts1/flipbook-vue"
-    />
+    <Ribbon />
     <Flipbook
       class="flipbook"
       :pages="pages"
@@ -57,12 +54,12 @@
 
 <script lang="coffee">
 import 'vue-material-design-icons/styles.css'
-import Ribbon from 'vue-ribbon'
 import LeftIcon from 'vue-material-design-icons/ChevronLeftCircle'
 import RightIcon from 'vue-material-design-icons/ChevronRightCircle'
 import PlusIcon from 'vue-material-design-icons/PlusCircle'
 import MinusIcon from 'vue-material-design-icons/MinusCircle'
 import Flipbook from './Flipbook'
+import Ribbon from './Ribbon'
 
 export default
   name: 'app'
