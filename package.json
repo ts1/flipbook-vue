@@ -40,6 +40,8 @@
     "@vue/cli-plugin-babel": "^3.7.0",
     "@vue/cli-service": "^4.3.0",
     "autoprefixer": "^9.5.1",
+    "babel-loader": "^8.2.5",
+    "cache-loader": "^4.1.0",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.4.1",
     "core-js": "^2.6.5",
@@ -48,15 +50,15 @@
     "rollup-plugin-terser": "^5.0.0",
     "rollup-plugin-vue": "^5.0.0",
     "svgo-loader": "^2.2.1",
-    "vue": "^2.6.10",
+    "url-loader": "^4.1.1",
+    "vue": "^3.0.0",
     "vue-cli-plugin-coffeescript": "^0.0.3",
     "vue-cli-plugin-pug": "~2.0.0",
     "vue-material-design-icons": "^3.2.0",
-    "vue-ribbon": "^1.0.1",
     "vue-template-compiler": "^2.5.21"
   },
   "peerDependencies": {
-    "vue": "^2.6.10"
+    "vue": ">=2.6.10"
   },
   "postcss": {
     "plugins": {
