@@ -274,14 +274,14 @@ See [this issue](https://github.com/ts1/flipbook-vue/issues/2#issuecomment-51342
 To start development server with demo pages:
 
 ```
-yarn
-yarn serve
+pnpm i
+pnpm serve
 ```
 
 To package for npm:
 
 ```
-yarn dist
+pnpm dist
 ```
 
 ## Credits
@@ -293,4 +293,4 @@ yarn dist
 
 MIT
 
-Copyright © 2019-2021 Takeshi Sone.
+Copyright © 2019-2022 Takeshi Sone.
