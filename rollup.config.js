@@ -41,7 +41,7 @@ const module = {
 }
 
 const browser = {
-  input: 'src/wrapper.coffee',
+  input: 'src/v3wrapper.coffee',
   external: ['vue'],
   output: {
     banner,
