@@ -7,6 +7,7 @@ import coffeescript from 'rollup-plugin-coffee-script'
 import { terser } from 'rollup-plugin-terser'
 import autoprefixer from 'autoprefixer'
 import { name, version } from './package.json'
+import styles from 'rollup-plugin-styles'
 
 const banner = `/*!
  * @license
@@ -17,32 +18,50 @@ const banner = `/*!
 `
 
 const plugins = [
+  vue(),
+  styles({
+    plugins: [autoprefixer()],
+    minimize: true,
+  }),
   resolve({ extensions: ['.js', '.vue', '.coffee'] }),
   commonjs(),
-  vue({
-    needMap: false,
-    style: { postcssPlugins: [autoprefixer()] },
-    template: { isProduction: true }
-  }),
   coffeescript(),
   buble(),
   url(),
 ]
 
-export default [{
+const module = {
   input: 'src/Flipbook.vue',
-  external: 'rematrix',
+  external: ['rematrix', 'vue'],
   output: [
     { banner, format: 'es', file: 'dist/flipbook.es.js' },
     { banner, format: 'cjs', file: 'dist/flipbook.cjs.js' }
   ],
-  plugins
-}, {
+  plugins,
+}
+
+const browser = {
   input: 'src/wrapper.coffee',
-  output: { banner, format: 'iife', file: 'dist/flipbook.js' },
-  plugins
-}, {
-  input: 'src/wrapper.coffee',
-  output: { banner, format: 'iife', file: 'dist/flipbook.min.js' },
-  plugins: [...plugins, terser({ output: { comments: /copyright|license/i } })]
-}]
+  external: ['vue'],
+  output: {
+    banner,
+    format: 'iife',
+    file: 'dist/flipbook.js',
+    globals: { vue: 'Vue'}
+  },
+  plugins,
+}
+
+const browserMin = {
+  ...browser,
+  output: {
+    ...browser.output,
+    file: 'dist/flipbook.min.js',
+  },
+  plugins: [
+    ...browser.plugins,
+    terser({ output: { comments: /copyright|license/i } }),
+  ],
+}
+
+export default [module, browser, browserMin]
