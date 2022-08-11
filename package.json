@@ -51,6 +51,7 @@
     "rollup-plugin-terser": "^5.0.0",
     "rollup-plugin-vue": "^6.0.0",
     "svgo-loader": "^2.2.1",
+    "thread-loader": "^3.0.4",
     "url-loader": "^4.1.1",
     "vue": "^3.0.0",
     "vue-cli-plugin-coffeescript": "^0.0.3",

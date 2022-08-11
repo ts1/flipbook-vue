@@ -20,6 +20,7 @@ specifiers:
   rollup-plugin-terser: ^5.0.0
   rollup-plugin-vue: ^6.0.0
   svgo-loader: ^2.2.1
+  thread-loader: ^3.0.4
   url-loader: ^4.1.1
   vue: ^3.0.0
   vue-cli-plugin-coffeescript: ^0.0.3
@@ -49,6 +50,7 @@ devDependencies:
   rollup-plugin-terser: 5.3.1_rollup@1.32.1
   rollup-plugin-vue: 6.0.0
   svgo-loader: 2.2.2
+  thread-loader: 3.0.4
   url-loader: 4.1.1
   vue: 3.2.37
   vue-cli-plugin-coffeescript: 0.0.3
@@ -5401,6 +5403,11 @@ packages:
     engines: {node: '>=4.3.0 <5.0.0 || >=5.10'}
     dev: true
 
+  /loader-runner/4.3.0:
+    resolution: {integrity: sha512-3R/1M+yS3j5ou80Me59j7F9IMs4PXs3VqRrm0TU3AbKPxlmpoY1TNscJV/oGJXo8qCatFGTfDbY6W6ipGOYXfg==}
+    engines: {node: '>=6.11.5'}
+    dev: true
+
   /loader-utils/0.2.17:
     resolution: {integrity: sha512-tiv66G0SmiOx+pLWMtGEkfSEejxvb6N6uRrQjfWJIT79W9GMpgKeCAmm9aVBKtd4WEgntciI8CsGqjpDoCWJug==}
     dependencies:
@@ -8500,6 +8507,19 @@ packages:
       loader-utils: 1.4.0
       neo-async: 2.6.2
       webpack: 4.46.0
+    dev: true
+
+  /thread-loader/3.0.4:
+    resolution: {integrity: sha512-ByaL2TPb+m6yArpqQUZvP+5S1mZtXsEP7nWKKlAUTm7fCml8kB5s1uI3+eHRP2bk5mVYfRSBI7FFf+tWEyLZwA==}
+    engines: {node: '>= 10.13.0'}
+    peerDependencies:
+      webpack: ^4.27.0 || ^5.0.0
+    dependencies:
+      json-parse-better-errors: 1.0.2
+      loader-runner: 4.3.0
+      loader-utils: 2.0.2
+      neo-async: 2.6.2
+      schema-utils: 3.1.1
     dev: true
 
   /through2/2.0.5:
