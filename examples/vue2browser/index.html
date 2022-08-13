@@ -2,6 +2,7 @@
 <html>
   <head>
     <style>
+      body { margin: 0 }
       .flipbook {
         width: 100vw;
         height: 100vh;
@@ -12,13 +13,10 @@
     <div id="app">
       <flipbook class="flipbook" :pages="[null, 'images/1.jpg', 'images/2.jpg', 'images/3.jpg', 'images/6.jpg']" />
     </div>
-    <script src="https://unpkg.com/vue@3"></script>
+    <script src="https://unpkg.com/vue@2"></script>
     <script src="flipbook.min.js"></script>
     <script>
-      const { createApp } = Vue
-      const app = createApp({})
-      app.component('Flipbook', Flipbook)
-      app.mount('#app')
+      new Vue({ el: '#app' })
     </script>
   </body>
 </html>
