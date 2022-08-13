@@ -21,11 +21,20 @@ or
 yarn add flipbook-vue
 ```
 
+or
+
+```
+pnpm add flipbook-vue
+```
+
 Or include in html:
 
 ```html
 <script src="https://unpkg.com/flipbook-vue"></script>
 ```
+
+> **BREAKING CHANGE**: This form now provides Vue 3 version.
+> If you are using Vue 2.x, use `"https://unpkg.com/flipbook-vue/dist/vue2/flipbook.min.js"` (preferred) or `"https://unpkg.com/flipbook-vue@0"`.
 
 ## Usage
 
@@ -42,7 +51,7 @@ Or include in html:
 </style>
 ```
 
-If installed as a module,
+If installed as a module, with Vue 3.x,
 
 ```html
 <script>
@@ -53,16 +62,9 @@ export default {
 </script>
 ```
 
-If you would like to build from `.vue` directly (including CoffeeScript transpile, etc),
-
-```javascript
-import Flipbook from 'flipbook-vue/sfc'
-```
-
-or
-
-```javascript
-import Flipbook from 'flipbook-vue/src/Flipbook.vue'
+To use with Vue 2.x,
+```js
+import Flipbook from 'flipbook-vue/vue2'
 ```
 
 ## Props
@@ -274,6 +276,7 @@ See [this issue](https://github.com/ts1/flipbook-vue/issues/2#issuecomment-51342
 To start development server with demo pages:
 
 ```
+cd examples/demo
 pnpm i
 pnpm serve
 ```
