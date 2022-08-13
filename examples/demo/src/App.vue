@@ -52,68 +52,81 @@
   </div>
 </template>
 
-<script lang="coffee">
+<script>
 import 'vue-material-design-icons/styles.css'
 import LeftIcon from 'vue-material-design-icons/ChevronLeftCircle'
 import RightIcon from 'vue-material-design-icons/ChevronRightCircle'
 import PlusIcon from 'vue-material-design-icons/PlusCircle'
 import MinusIcon from 'vue-material-design-icons/MinusCircle'
-import Flipbook from './Flipbook'
+import Flipbook from 'flipbook-vue/vue2'
 import Ribbon from './Ribbon'
 
-export default
-  name: 'app'
-  components: { Flipbook, LeftIcon, RightIcon, PlusIcon, MinusIcon, Ribbon }
-  data: ->
-    pages: [],
-    pagesHiRes: [],
-    hasMouse: true
-    pageNum: null
-  methods:
-    onFlipLeftStart: (page) -> console.log 'flip-left-start', page
-    onFlipLeftEnd: (page) ->
-      console.log 'flip-left-end', page
+export default {
+  components: { Flipbook, LeftIcon, RightIcon, PlusIcon, MinusIcon, Ribbon },
+  data() {
+    return {
+      pages: [],
+      pagesHiRes: [],
+      hasMouse: true,
+      pageNum: null,
+    }
+  },
+  methods: {
+    onFlipLeftStart(page) { console.log('flip-left-start', page) },
+    onFlipLeftEnd(page) {
+      console.log('flip-left-end', page)
       window.location.hash = '#' + page
-    onFlipRightStart: (page) -> console.log 'flip-right-start', page
-    onFlipRightEnd: (page) ->
-      console.log 'flip-right-end', page
+    },
+    onFlipRightStart(page) { console.log('flip-right-start', page) },
+    onFlipRightEnd(page) {
+      console.log('flip-right-end', page)
       window.location.hash = '#' + page
-    onZoomStart: (zoom) -> console.log 'zoom-start', zoom
-    onZoomEnd: (zoom) -> console.log 'zoom-end', zoom
-    setPageFromHash: ->
-      n = parseInt window.location.hash.slice(1), 10
-      @pageNum = n if isFinite n
-  mounted: ->
-    window.addEventListener 'keydown', (ev) =>
-      flipbook = @$refs.flipbook
-      return unless flipbook
-      flipbook.flipLeft() if ev.keyCode == 37 and flipbook.canFlipLeft
-      flipbook.flipRight() if ev.keyCode == 39 and flipbook.canFlipRight
+    },
+    onZoomStart(zoom) {
+      console.log('zoom-start', zoom)
+    },
+    onZoomEnd(zoom) {
+      console.log('zoom-end', zoom)
+    },
+    setPageFromHash() {
+      const n = parseInt(window.location.hash.slice(1), 10)
+      if (isFinite(n)) this.pageNum = n
+    },
+  },
+  mounted() {
+    window.addEventListener('keydown', (ev) => {
+      const flipbook = this.$refs.flipbook
+      if (!flipbook) return
+      if (ev.keyCode == 37 && flipbook.canFlipLeft) flipbook.flipLeft()
+      if (ev.keyCode == 39 && flipbook.canFlipRight) flipbook.flipRight()
+    })
 
-    # Simulate asynchronous pages initialization
-    setTimeout (=>
-      @pages = [
-        null
-        'images/1.jpg'
-        'images/2.jpg'
-        'images/3.jpg'
-        'images/4.jpg'
-        'images/5.jpg'
-        'images/6.jpg'
+    // Simulate asynchronous pages initialization
+    setTimeout(() => {
+      this.pages = [
+        null,
+        'images/1.jpg',
+        'images/2.jpg',
+        'images/3.jpg',
+        'images/4.jpg',
+        'images/5.jpg',
+        'images/6.jpg',
       ]
-      @pagesHiRes = [
-        null
-        'images-large/1.jpg'
-        'images-large/2.jpg'
-        'images-large/3.jpg'
-        'images-large/4.jpg'
-        'images-large/5.jpg'
-        'images-large/6.jpg'
+      this.pagesHiRes = [
+        null,
+        'images-large/1.jpg',
+        'images-large/2.jpg',
+        'images-large/3.jpg',
+        'images-large/4.jpg',
+        'images-large/5.jpg',
+        'images-large/6.jpg',
       ]
-    ), 1
+    }, 1)
 
-    window.addEventListener 'hashchange', @setPageFromHash
-    @setPageFromHash()
+    window.addEventListener('hashchange', this.setPageFromHash)
+    this.setPageFromHash()
+  },
+}
 </script>
 
 <style>
@@ -182,8 +195,8 @@ a {
 }
 
 .flipbook .viewport {
-  width: 90vw;
-  height: calc(100vh - 50px - 40px);
+  width: 90vw !important;
+  height: calc(100vh - 50px - 40px) !important;
 }
 
 .flipbook .bounding-box {
