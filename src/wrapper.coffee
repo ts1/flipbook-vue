@@ -1,2 +1,8 @@
 import Flipbook from './Flipbook'
-Vue.component 'flipbook', Flipbook
+
+if window.Vue?.component
+  # for Vue 2
+  Vue.component 'flipbook', Flipbook
+else
+  # for Vue 3
+  window.Flipbook = Flipbook
