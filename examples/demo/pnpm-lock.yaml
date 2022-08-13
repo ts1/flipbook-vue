@@ -6,12 +6,14 @@ specifiers:
   core-js: ^3.8.3
   flipbook-vue: link:../..
   vue: ^2.6.14
+  vue-material-design-icons: ^5.1.2
   vue-template-compiler: ^2.6.14
 
 dependencies:
   core-js: 3.24.1
   flipbook-vue: link:../..
   vue: 2.7.8
+  vue-material-design-icons: 5.1.2
 
 devDependencies:
   '@vue/cli-plugin-babel': 5.0.8_wl7d2hpiuow3ut5bj7tv5qa5re
@@ -5620,6 +5622,10 @@ packages:
       loader-utils: 2.0.2
       webpack: 5.74.0
     dev: true
+
+  /vue-material-design-icons/5.1.2:
+    resolution: {integrity: sha512-nD1qFM2qAkMlVoe23EfNKIeMfYl6YjHZjSty9q0mwc2gXmPmvEhixywJQhM+VF5KVBI1zAkVTNLoUEERPY10pA==}
+    dev: false
 
   /vue-style-loader/4.1.3:
     resolution: {integrity: sha512-sFuh0xfbtpRlKfm39ss/ikqs9AbKCoXZBpHeVZ8Tx650o0k0q/YCM7FRvigtxpACezfq6af+a7JeqVTWvncqDg==}
