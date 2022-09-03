@@ -18,17 +18,17 @@
     "coffeescript",
     "coffeescript2"
   ],
-  "module": "dist/flipbook.es.js",
+  "module": "dist/flipbook.mjs",
   "main": "dist/flipbook.cjs.js",
   "unpkg": "dist/flipbook.min.js",
   "exports": {
     ".": {
-      "import": "./dist/flipbook.es.js",
+      "import": "./dist/flipbook.mjs",
       "require": "./dist/flipbook.cjs.js",
       "browser": "./dist/flipbook.min.js"
     },
     "./vue2": {
-      "import": "./dist/vue2/flipbook.es.js",
+      "import": "./dist/vue2/flipbook.mjs",
       "require": "./dist/vue2/flipbook.cjs.js",
       "browser": "./dist/vue2/flipbook.min.js"
     }

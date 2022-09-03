@@ -44,7 +44,7 @@ const modules = (vue, dist) => ({
   input: 'src/Flipbook.vue',
   external: ['rematrix', 'vue'],
   output: [
-    { banner, format: 'es', file: `${dist}/flipbook.es.js` },
+    { banner, format: 'es', file: `${dist}/flipbook.mjs` },
     { banner, format: 'cjs', file: `${dist}/flipbook.cjs.js`, exports: 'default' }
   ],
   plugins: plugins(vue),
