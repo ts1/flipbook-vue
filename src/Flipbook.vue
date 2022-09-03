@@ -221,7 +221,7 @@ export default
     loadedImages: {}
 
   computed:
-    IE: -> /Trident/.test navigator.userAgent
+    IE: -> typeof navigator != 'undefined' and /Trident/.test navigator.userAgent
     canFlipLeft: ->
       if @forwardDirection == 'left' then @canGoForward else @canGoBack
     canFlipRight: ->
