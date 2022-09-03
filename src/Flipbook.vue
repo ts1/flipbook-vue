@@ -127,8 +127,6 @@ easeOut = (x) -> 1 - easeIn(1 - x)
 easeInOut = (x) ->
   if (x < 0.5) then easeIn(x * 2) / 2 else 0.5 + easeOut((x - 0.5) * 2) / 2
 
-IE = /Trident/.test navigator.userAgent
-
 export default
   props:
     pages:
@@ -223,6 +221,7 @@ export default
     loadedImages: {}
 
   computed:
+    IE: -> /Trident/.test navigator.userAgent
     canFlipLeft: ->
       if @forwardDirection == 'left' then @canGoForward else @canGoBack
     canFlipRight: ->
@@ -258,7 +257,7 @@ export default
     cursor: ->
       if @activeCursor
         @activeCursor
-      else if IE
+      else if @IE
         'auto'
       else if @clickToZoom and @canZoomIn
         'zoom-in'
@@ -537,7 +536,7 @@ export default
             rgba(0, 0, 0, #{diffuse[4]}))
           """
 
-      if @gloss > 0 and not IE
+      if @gloss > 0 and not @IE
         DEG = 30
         POW = 200
         specular = lightingPoints.map (d) =>
@@ -676,7 +675,7 @@ export default
       animate = => requestAnimationFrame =>
         t = Date.now() - t0
         ratio = t / @zoomDuration
-        ratio = 1 if ratio > 1 or IE
+        ratio = 1 if ratio > 1 or @IE
         ratio = easeInOut(ratio)
         @zoom = start + (end - start) * ratio
         @scrollLeft = startX + (endX - startX) * ratio
@@ -856,13 +855,13 @@ export default
       animate()
 
     scrollLeftLimited: (val) ->
-      if IE
+      if @IE
         requestAnimationFrame => @$refs.viewport.scrollLeft = val
       else
         @$refs.viewport.scrollLeft = val
 
     scrollTopLimited: (val) ->
-      if IE
+      if @IE
         requestAnimationFrame => @$refs.viewport.scrollTop = val
       else
         @$refs.viewport.scrollTop = val
