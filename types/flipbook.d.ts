@@ -15,7 +15,7 @@ export interface SlotScope {
   zoomIn(): void
   zoomOut(): void
 }
-const component: Vue.DefineComponent<
+declare const component: Vue.DefineComponent<
   {
     pages: string[]
     pagesHiRes?: string[]
