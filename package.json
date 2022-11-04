@@ -68,7 +68,8 @@
     "not dead"
   ],
   "files": [
-    "dist"
+    "dist",
+    "types"
   ],
   "dependencies": {
     "rematrix": "^0.7.2"
