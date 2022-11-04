@@ -1,6 +1,6 @@
 {
   "name": "flipbook-vue",
-  "version": "1.0.0-alpha.4",
+  "version": "1.0.0-beta.0",
   "license": "MIT",
   "description": "3D page flip effect for Vue.js",
   "homepage": "https://ts1.github.io/flipbook-vue/",
