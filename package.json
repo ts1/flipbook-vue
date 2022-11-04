@@ -20,12 +20,14 @@
   ],
   "module": "dist/flipbook.mjs",
   "main": "dist/flipbook.cjs.js",
+  "types": "types/flipbook.d.ts",
   "unpkg": "dist/flipbook.min.js",
   "exports": {
     ".": {
       "import": "./dist/flipbook.mjs",
       "require": "./dist/flipbook.cjs.js",
-      "browser": "./dist/flipbook.min.js"
+      "browser": "./dist/flipbook.min.js",
+      "types": "./types/flipbook.d.ts"
     },
     "./vue2": {
       "import": "./dist/vue2/flipbook.mjs",
