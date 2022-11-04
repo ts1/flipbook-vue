@@ -285,6 +285,7 @@ pnpm dist
 
 - vivekKodira: README correction
 - siderisng: `dragToFlip`
+- MaikoTan: TypeScript support
 
 ## License
 
