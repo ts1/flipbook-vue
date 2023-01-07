@@ -58,7 +58,7 @@ import LeftIcon from 'vue-material-design-icons/ChevronLeftCircle'
 import RightIcon from 'vue-material-design-icons/ChevronRightCircle'
 import PlusIcon from 'vue-material-design-icons/PlusCircle'
 import MinusIcon from 'vue-material-design-icons/MinusCircle'
-import Flipbook from 'flipbook-vue/vue2'
+import Flipbook from 'flipbook-vue'
 import Ribbon from './Ribbon'
 
 export default {
