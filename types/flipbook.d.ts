@@ -2,6 +2,11 @@ import Vue from 'vue'
 export type Direction = 'left' | 'right'
 export type Face = 'front' | 'back'
 
+export interface ZoomAt {
+  pageX: number
+  pageY: number
+}
+
 export type ImageLoadCallback = () => unknown
 export interface SlotScope {
   canFlipLeft: boolean
@@ -12,8 +17,8 @@ export interface SlotScope {
   numPages: number
   flipLeft(): void
   flipRight(): void
-  zoomIn(): void
-  zoomOut(): void
+  zoomIn(zoomAt?: ZoomAt): void
+  zoomOut(zoomAt?: ZoomAt): void
 }
 declare const component: Vue.DefineComponent<
   {
@@ -34,6 +39,7 @@ declare const component: Vue.DefineComponent<
     loadingImage?: string
     clickToZoom?: boolean
     dragToFlip?: boolean
+    wheel?: 'scroll' | 'zoom'
   },
   {},
   {},
@@ -52,10 +58,10 @@ declare const component: Vue.DefineComponent<
     flipRevert(): number
     onImageLoad(trigger: number, cb: ImageLoadCallback): ImageLoadCallback
     didLoadImage(ev: Event): undefined | null
-    zoomIn(): number
-    zoomOut(): number
-    zoomTo(zoom: number, fixedX: number, fixedY: number): number
-    zoomAt(touch: TouchInit): number
+    zoomIn(zoomAt?: ZoomAt): number
+    zoomOut(zoomAt?: ZoomZt): number
+    zoomTo(zoom: number, zoomAt?: ZoomAt): number
+    zoomAt(touch: ZoomAt): number
     swipeStart(touch: TouchInit): 'grab' | 'all-scroll'
     swipeMove(touch: TouchInit): true | undefined
     swipeEnd(touch: TouchInit): null | undefined

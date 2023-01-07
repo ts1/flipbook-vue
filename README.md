@@ -95,7 +95,7 @@ Defaults to 500.
 
 ### `zooms`
 
-Array of possible magnifications. 
+Array of possible magnifications.
 `null` is equivalent to `[1]` (no zoom).
 Defaults to `[1, 2, 4]`. _NOTE_ : Do **NOT** pass an empty array.
 
@@ -156,6 +156,11 @@ Zoom in or out on click or tap. Default is `true`.
 ### `dragToFlip`
 
 Flip page by dragging/swiping. Default is `true`.
+
+### `wheel`
+
+When set to `'zoom'`, mouse wheel events zoom in/out the page.
+Default is `'scroll'`, wheel events and touch pad scroll gestures scroll the zoomed page.
 
 ## Events
 

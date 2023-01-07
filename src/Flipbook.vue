@@ -180,6 +180,9 @@ export default
     dragToFlip:
       type: Boolean
       default: true
+    wheel:
+      type: String
+      default: 'scroll'
 
   data: ->
     viewWidth: 0
@@ -646,24 +649,29 @@ export default
         @imageLoadCallback()
         @imageLoadCallback = null
 
-    zoomIn: ->
+    zoomIn: (zoomAt=null) ->
       return unless @canZoomIn
       @zoomIndex += 1
-      @zoomTo @zooms_[@zoomIndex]
+      @zoomTo @zooms_[@zoomIndex], zoomAt
 
-    zoomOut: ->
+    zoomOut: (zoomAt=null) ->
       return unless @canZoomOut
       @zoomIndex -= 1
-      @zoomTo @zooms_[@zoomIndex]
+      @zoomTo @zooms_[@zoomIndex], zoomAt
 
-    zoomTo: (zoom, fixedX, fixedY) ->
+    zoomTo: (zoom, zoomAt=null) ->
+      viewport = @$refs.viewport
+      if zoomAt
+        rect = viewport.getBoundingClientRect()
+        fixedX = zoomAt.pageX - rect.left
+        fixedY = zoomAt.pageY - rect.top
+      else
+        fixedX = viewport.clientWidth / 2
+        fixedY = viewport.clientHeight / 2
       start = @zoom
       end = zoom
-      viewport = @$refs.viewport
       startX = viewport.scrollLeft
       startY = viewport.scrollTop
-      fixedX or= viewport.clientWidth / 2
-      fixedY or= viewport.clientHeight / 2
       containerFixedX = fixedX + startX
       containerFixedY = fixedY + startY
       endX = containerFixedX / start * end - fixedX
@@ -692,12 +700,9 @@ export default
       if end > 1
         @preloadImages true
 
-    zoomAt: (touch) ->
-      rect = @$refs.viewport.getBoundingClientRect()
-      x = touch.pageX - rect.left
-      y = touch.pageY - rect.top
+    zoomAt: (zoomAt) ->
       @zoomIndex = (@zoomIndex + 1) % @zooms_.length
-      @zoomTo @zooms_[@zoomIndex], x, y
+      @zoomTo @zooms_[@zoomIndex], zoomAt
 
     swipeStart: (touch) ->
       @touchStartX = touch.pageX
@@ -788,10 +793,18 @@ export default
       @scrollTop = @startScrollTop - y
 
     onWheel: (ev) ->
-      if @zoom > 1 and @dragToScroll
+      if @wheel == 'scroll' and @zoom > 1 and @dragToScroll
         @scrollLeft = @$refs.viewport.scrollLeft + ev.deltaX
         @scrollTop = @$refs.viewport.scrollTop + ev.deltaY
         ev.preventDefault() if ev.cancelable
+
+      if @wheel == 'zoom'
+        if ev.deltaY >= 100
+          @zoomOut(ev)
+          ev.preventDefault()
+        else if ev.deltaY <= -100
+          @zoomIn(ev)
+          ev.preventDefault()
 
     preloadImages: (hiRes = false) ->
       for i in [@currentPage - 3 .. @currentPage + 3]
