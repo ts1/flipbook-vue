@@ -10,7 +10,6 @@
       :pages="pages"
       :pagesHiRes="pagesHiRes"
       :startPage="pageNum"
-      wheel="zoom"
       v-slot="flipbook"
       ref="flipbook"
       @flip-left-start="onFlipLeftStart"
