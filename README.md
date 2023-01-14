@@ -296,4 +296,4 @@ pnpm dist
 
 MIT
 
-Copyright © 2019-2022 Takeshi Sone.
+Copyright © 2019-2023 Takeshi Sone.
