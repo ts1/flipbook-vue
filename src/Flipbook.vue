@@ -717,7 +717,6 @@ export default
         @activeCursor = 'all-scroll'
 
     swipeMove: (touch) ->
-      return unless @dragToFlip
       return unless @touchStartX?
       x = touch.pageX - @touchStartX
       y = touch.pageY - @touchStartY
@@ -726,6 +725,7 @@ export default
       if @zoom > 1
         @dragScroll x, y if @dragToScroll
         return
+      return unless @dragToFlip
       return if Math.abs(y) > Math.abs(x)
       @activeCursor = 'grabbing'
       if x > 0
